@@ -143,13 +143,18 @@ val["D0"]['rho_phis_DGs_tot'] = -0.05  # hard-coded
 # Compute and add to `val` etots and rho_tots
 # 2 utilities:
 def etot(exp, paramName):
+    """ Calculate total uncertainty of the parameters based on
+    systematic and statistical uncertainties previously input"""
     return np.sqrt(val[exp][paramName + "_estat"] ** 2 + val[exp][paramName + "_esyst"] ** 2)
 
 def rho(exp, param1, param2):
+    """ Calculate total correlation of the two parameters based on
+    systematic and statistical correlations previously input"""
     return (val[exp][param1+"_estat"] * val[exp][param2+"_estat"] * val[exp]["rho_"+param1+"_"+param2+"_stat"] +\
             val[exp][param1+"_esyst"] * val[exp][param2+"_esyst"] * val[exp]["rho_"+param1+"_"+param2+"_syst"])/\
             (val[exp][param1+"_etot"] * val[exp][param2+"_etot"])
 
+# Calculate total uncertainties and correlations; skip hard-coded params
 for exp in experiments:
     for param in ["Gs", "DGs", "phis"]:
         val[exp][param+"_etot"] = etot(exp, param)
@@ -281,7 +286,7 @@ class Minimiser(object):
                 print >>f, header
                 print >>f, '=' * 30
                 print >>f, parnames[0], "=", x, "^{+", explus, "}_{", exminus, "}"
-                print >>f, parnames[1], "=", x, "^{+", eyplus, "}_{", eyminus, "}"
+                print >>f, parnames[1], "=", y, "^{+", eyplus, "}_{", eyminus, "}"
                 print >>f, "rho(", parnames[0], ", ", parnames[1], ") = ", rho
                 
 # starting values for the Phis, DGs parameters
