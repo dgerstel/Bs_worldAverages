@@ -14,16 +14,16 @@
 
 # GitHub tips:
 1. To download the repo for the first time just do the following (no need to be singed in on the GitHub):
-- $ git clone https://github.com/dgerstel/Bs_worldAverages.git
+  - $ git clone https://github.com/dgerstel/Bs_worldAverages.git
 
 2. To update your local repo:
-- $ git pull
+   - $ git pull
 
 3. To upload local changes to GitHub repo:
-- (can list all changes with $ git status)
-- $ git commit -m "_brief comment of changes made_" _filename_
-- (e.g. $ git commit -m "updated phis/DGs plot labels" GsDGs_and_PhisDGs_worldAverages.py)
-- $ git push
+   - (can list all changes with $ git status)
+   - $ git commit -m "_brief comment of changes made_" _filename_
+   - (e.g. $ git commit -m "updated phis/DGs plot labels" GsDGs_and_PhisDGs_worldAverages.py)
+   - $ git push
 
 4. If the above steps don't work -- make sure you've taken care of the ssh-keys, as described below.
 
