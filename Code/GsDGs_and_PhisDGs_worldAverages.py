@@ -1,15 +1,7 @@
-
-# coding: utf-8
-
-# In[1]:
-
 ## HFAG, Combined Gs, DGs including correlated statistical and
 ## systematical uncertainties 
 #### Rick van Kooten, Olivier Leroy, update after ICHEP 2014 
 #### Re-writing code in Python: Dawid Gerstel
-
-
-# In[ ]:
 
 # useful visualisation and numerical tools
 import matplotlib.pyplot as plt
@@ -27,7 +19,7 @@ from iminuit import Minuit, describe, Struct, util
 
 # Below, I considerd LHCb Psi2S Phi and LHCb J/Psi KK as seperate experiments.
 
-# In[ ]:
+
 experiments = ["LHCb_Psi2S_Phi", "LHCb_JPsi_KK", "ATLAS", "CMS", "CDF", "D0"]
 # params to be just read (not computed)
 params = ["Gs", "Gs_estat", "Gs_esyst", "DGs", "DGs_estat", "DGs_esyst", "rho_Gs_DGs_stat", "rho_Gs_DGs_syst"]
@@ -165,7 +157,7 @@ for exp in experiments:
 
 # ### p.d.f.'s for the experiments
 
-# In[ ]:
+
 
 def gaussian2D(x, y, x0, xsig, y0, ysig, rho):
     """Joint p.d.f. of Gs and DGs for JPsi_Phi-like channels
@@ -180,7 +172,7 @@ def gaussian2D(x, y, x0, xsig, y0, ysig, rho):
            (y - y0) ** 2 / ysig ** 2 - 2 * rho * (x - x0) * (y - y0) / (xsig * ysig)) )
 
 
-# In[ ]:
+
 
 def jointPDF(x, y, pm, exps):
     """Returns product of 2-dim Gaussians from all experiments considered
@@ -206,7 +198,7 @@ def jointPDFlog(x, y, pm, exps): return -2 * np.log(jointPDF(x, y, pm, exps))
 # ### Minimisation with Minuit (migrad, minos)
 ###########################################################################################################
 
-# In[ ]:
+
 
 
 class Maxlikelihood(object):
@@ -300,7 +292,7 @@ m = Minimiser(func, fitParams, fname=outputFile, header="Result from the global 
 ###########################################################################################
 # ### Contour plots
 
-# In[ ]:
+
 
 # grid
 X = np.linspace(-1.2, 0.4, 1000)
@@ -385,7 +377,7 @@ saveplt(plt, name='Phis_vs_DGs')
 # # Analysis of $\Delta \Gamma_{s}$ and $\Gamma_{s}$
 
 # ### Input data (flavour-specific and CP-related) and p.d.f.'s
-# In[ ]:
+
 # (* tauDsDs constraint, only LHCb.  tauDsDs = tauL(1+phis^2 ys/2 )*)
 tauDsDs1 = 1.37900
 etauDsDs1 = 0.03106
@@ -505,7 +497,7 @@ print_tau_fit(m, outputFile)
 ##############################################################################################
 # ### Contour plots
 
-# In[ ]:
+
 
 # grid
 Gsmin, Gsmax, DGsmin, DGsmax = (0.62, 0.75, 0, 0.25)
@@ -582,7 +574,7 @@ saveplt(plt, name='Gs_vs_DGs')
 
 # ### Analysis in terms of lifetimes
 
-# In[ ]:
+
 
 # lists of colours, labels, experiment channels, coordinates of labels
 coords = [(0.5, 0.82), (0.95, 0.5), (0.9, 0.2), (0.45, 0.3), (0.42, 0.42)]
