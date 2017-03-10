@@ -27,6 +27,9 @@
 
 4. If the above steps don't work -- make sure you've taken care of the ssh-keys, as described below.
 
+5. To add another file to be tracked by git:
+   - `$ git add _filename_`
+
 
 # ssh keys:
 - For quicker pull/push from from/to the repository you can add your ssh-key to the github website (Settings/Deploy keys).
