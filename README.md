@@ -11,6 +11,12 @@
 - $ python2 GsDGs_and_PhisDGs_worldAverages.py
 - .txt file and 3 kinds of figures in .eps, .png, .jpg and .pdf formats will appear in ../Results
 
+# GitHub tips:
+1. To download the repo for the first time just do the following (no need to be singed in on the GitHub):
+
+$ git clone https://github.com/dgerstel/Bs_worldAverages.git
+
+2. To update your local repo
 # ssh keys:
 - For quicker pull/push from from/to the repository you can add your ssh-key to the github website (Settings/Deploy keys).
 - To generate and display ssh-key on your machine do:
