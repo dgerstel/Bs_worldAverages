@@ -377,6 +377,23 @@ ax.add_patch(rect)
 plt.text(0.515, 0.5, "SM", verticalalignment='bottom', horizontalalignment='right',
     transform=ax.transAxes, color='k', fontsize=15)
 
+# Draw HFAG logo
+# (1) black rectangle
+x, y, dx, dy = (0.3, 0.14, 0.1, 0.01)
+cosmetics = {'linewidth':1, 'edgecolor':'k', 'facecolor':'k'}
+blr = patches.Rectangle((x,y), dx, dy, **cosmetics)
+# (2) small white rectangle
+ddx, ddy = (0.005*dx, 0.005*dx)
+cosmetics = {'linewidth':.1, 'edgecolor':'white', 'facecolor':'white'}
+whr = patches.Rectangle((x+ddx,y+ddy), dx-2*ddx, 0.4*dy, **cosmetics)
+ax.add_patch(blr)
+ax.add_patch(whr)
+# (3) HFAG text
+plt.text(x+.5*dx, y+.6*dy, "HFAG", verticalalignment='bottom', horizontalalignment='center',
+    color='w', fontsize=15, fontstyle='italic')
+# (4) edition (=season+year) text
+plt.text(x+.5*dx, y+2*ddy, "Spring 2017", verticalalignment='bottom', horizontalalignment='center',
+    color='k', fontsize=8, fontstyle='italic')
 
 # Add plot description
 plt.text(0.95, 0.70, "68% CL contours", verticalalignment='bottom', horizontalalignment='right',
@@ -412,6 +429,8 @@ def saveplt(plt, name):
 
 saveplt(plt, name='Phis_vs_DGs')
 
+import sys
+sys.exit()
 #############################################################################################
 # # Analysis of $\Delta \Gamma_{s}$ and $\Gamma_{s}$
 
