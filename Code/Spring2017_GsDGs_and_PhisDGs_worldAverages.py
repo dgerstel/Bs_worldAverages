@@ -637,6 +637,8 @@ for i in range(len(coords)):
         # skip contour edges for rectangular bands
         if (i != 0 and i != 1):
             plt.contour(tau_L, tau_H, dlnL, levels=[0, 1.], alpha=0.8, colors=colors[i], linewidths=1)
+	else:
+	    plt.contour(tau_L, tau_H, dlnL, levels=[1.], alpha=0.8, colors=colors[i], linewidths=1)
 
     plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', 
              horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=17)
