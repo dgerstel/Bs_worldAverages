@@ -11,6 +11,10 @@ import numpy as np
 import matplotlib.patches as patches
 from iminuit import Minuit, describe, Struct, util
 
+# Directory of all results (pictures and txt)
+ResDir = "../Results/"
+outputFile = ResDir + "Results_GsDGs_and_PhisDGs_Spring2017.txt"
+
 # # Inputs
 # 
 # - LHCb data: Khave txt file for $J/\Psi KK$
@@ -319,9 +323,6 @@ class Minimiser(object):
                 print >>f, "rho(", parnames[0], ", ", parnames[1], ") = ", rho
                 
 # starting values for the Phis, DGs parameters
-# Directory of all results (pictures and txt)
-ResDir = ""
-outputFile = ResDir + "Results_GsDGs_and_PhisDGs_Spring2017.txt"
 fitParams = dict(x=-0.3, y=0.085, error_x=0.0325, error_y=0.0065, limit_x=None, limit_y=None)
 parnames = ('phis', 'DGs')
 func = Maxlikelihood(par=parnames, exps=experiments)
@@ -405,9 +406,10 @@ plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 
 # plt.show()
 def saveplt(plt, name):
+    imageName = ResDir + name + '.'
     for suffix in ['png', 'pdf', 'eps', 'jpg']:
-        plt.savefig(ResDir + name + '.' + suffix, bbox_inches='tight')  
-        
+        plt.savefig(imageName + suffix, format=suffix, bbox_inches='tight')  
+
 saveplt(plt, name='Phis_vs_DGs')
 
 #############################################################################################
