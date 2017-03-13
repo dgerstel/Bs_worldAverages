@@ -377,23 +377,6 @@ ax.add_patch(rect)
 plt.text(0.515, 0.5, "SM", verticalalignment='bottom', horizontalalignment='right',
     transform=ax.transAxes, color='k', fontsize=15)
 
-# Draw HFAG logo
-# (1) black rectangle
-x, y, dx, dy = (0.3, 0.14, 0.1, 0.01)
-cosmetics = {'linewidth':1, 'edgecolor':'k', 'facecolor':'k'}
-blr = patches.Rectangle((x,y), dx, dy, **cosmetics)
-# (2) small white rectangle
-ddx, ddy = (0.005*dx, 0.005*dx)
-cosmetics = {'linewidth':.1, 'edgecolor':'white', 'facecolor':'white'}
-whr = patches.Rectangle((x+ddx,y+ddy), dx-2*ddx, 0.4*dy, **cosmetics)
-ax.add_patch(blr)
-ax.add_patch(whr)
-# (3) HFAG text
-plt.text(x+.5*dx, y+.6*dy, "HFAG", verticalalignment='bottom', horizontalalignment='center',
-    color='w', fontsize=15, fontstyle='italic')
-# (4) edition (=season+year) text
-plt.text(x+.5*dx, y+2*ddy, "Spring 2017", verticalalignment='bottom', horizontalalignment='center',
-    color='k', fontsize=8, fontstyle='italic')
 
 # Add plot description
 plt.text(0.95, 0.70, "68% CL contours", verticalalignment='bottom', horizontalalignment='right',
@@ -421,6 +404,30 @@ ax.set_autoscale_on(False)
 plt.xlabel(r'$\phi_{s}^{c\bar{c}s}[\mathrm{rad}]$', fontsize=26)
 plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 
+def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
+    # (1) black rectangle
+    dx = 0.12*(plotWidth)
+    dy = 0.10 *(plotHeight)
+    #x, y, dx, dy = (0.3, 0.14, 0.1, 0.01)
+    x, y = leftBottom
+    cosmetics = {'linewidth':1, 'edgecolor':'k', 'facecolor':'k'}
+    blr = patches.Rectangle((x,y), dx, dy, **cosmetics)
+    # (2) small white rectangle
+    ddx, ddy = (0.03*dx, 0.008*dx)
+    cosmetics = {'linewidth':.1, 'facecolor':'white'}
+    height_w = 0.4*dy
+    whr = patches.Rectangle((x+ddx,y+ddy), dx-2*ddx, height_w, **cosmetics)
+    ax.add_patch(blr)
+    ax.add_patch(whr)
+    # (3) HFAG text
+    plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFAG", verticalalignment='center', horizontalalignment='center',
+        color='w', fontsize=15, fontstyle='italic', fontweight='light')
+    # (4) edition (=season+year) text
+    plt.text(x+.5*dx, y+ddy+0.5*height_w, "Spring 2017", verticalalignment='center', horizontalalignment='center',
+        color='k', fontsize=8, fontstyle='italic', fontweight='light')
+
+drawHFAGlogo(leftBottom=(0.35, 0.125), plotWidth=(phismax-phismin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+
 # plt.show()
 def saveplt(plt, name):
     imageName = ResDir + name + '.'
@@ -429,8 +436,8 @@ def saveplt(plt, name):
 
 saveplt(plt, name='Phis_vs_DGs')
 
-import sys
-sys.exit()
+#import sys
+#sys.exit()
 #############################################################################################
 # # Analysis of $\Delta \Gamma_{s}$ and $\Gamma_{s}$
 
@@ -625,6 +632,8 @@ ax.set_autoscale_on(False)
 plt.xlabel(r'$\Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 
+# Draw HFAG logo
+drawHFAGlogo(leftBottom=(0.73,0.2), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 saveplt(plt, name='Gs_vs_DGs')
 
 
@@ -697,4 +706,6 @@ for label in ax.get_yticklabels()[1::2]:
     label.set_visible(False)    
 plt.xlabel(r'$1/\Gamma_{L}[\mathrm{ps}]$', fontsize=26)
 plt.ylabel(r'$1/\Gamma_{H}[\mathrm{ps}]$', fontsize=26)
+
+drawHFAGlogo(leftBottom=(1.60, 1.775), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
 saveplt(plt, 'tauL_vs_tauH')
