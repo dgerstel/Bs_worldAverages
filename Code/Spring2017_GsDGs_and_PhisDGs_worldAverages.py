@@ -722,8 +722,8 @@ for label in ax.get_xticklabels()[1::2]:
     label.set_visible(False)
 for label in ax.get_yticklabels()[1::2]:
     label.set_visible(False)    
-plt.xlabel(r'$1/\Gamma_{L}[\mathrm{ps}]$', fontsize=26)
-plt.ylabel(r'$1/\Gamma_{H}[\mathrm{ps}]$', fontsize=26)
+plt.xlabel(r'$1/\Gamma_{s {\rm L}}[\mathrm{ps}]$', fontsize=26)
+plt.ylabel(r'$1/\Gamma_{s {\rm H}}[\mathrm{ps}]$', fontsize=26)
 
 drawHFAGlogo(leftBottom=(1.60, 1.775), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
 saveplt(plt, 'tauL_vs_tauH')
