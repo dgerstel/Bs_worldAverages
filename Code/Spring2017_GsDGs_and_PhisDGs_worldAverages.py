@@ -9,7 +9,18 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.patches as patches
+#import matplotlib.rcParams as rcParams
+import matplotlib
 from iminuit import Minuit, describe, Struct, util
+
+#from matplotlib import rc
+#rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+## for Palatino and other serif fonts use:
+#rc('font',**{'family':'serif','serif':['Palatino']})
+#rc('text', usetex=True)
+matplotlib.rcParams['mathtext.fontset'] = 'cm'
+#matplotlib.rcParams['mathtext.fontset'] = 'dejavu'
+#matplotlib.rcParams['mathtext.fontset'] = 'dejavusans'
 
 # Directory of all results (pictures and txt)
 ResDir = "../Results/"
@@ -369,7 +380,7 @@ def rectangle(x, xerr_down, xerr_up, y, yerr_down, yerr_up, kwargs):
     dx, dy = (xerr_down + xerr_up, yerr_down + yerr_up)
     return patches.Rectangle(left_bottom, width=dx, height=dy, **kwargs)
 
-cosmetics = {'linewidth':1, 'edgecolor':'k', 'facecolor':'none'}
+cosmetics = {'linewidth':1, 'edgecolor':'k', 'facecolor':'k'}
 rect = rectangle(phis_SM, phis_SM_err_down, phis_SM_err_up, DGs_SM, DGs_SM_err_down, DGs_SM_err_up, cosmetics)
 
 # Add the rectangle to the axes
@@ -575,7 +586,7 @@ labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
           r"$\tau(B^{0}_{s} \rightarrow$ flavour specific)", 
           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
 
-coords = [(0.8, 0.05), (0.7, 0.5), (0.5, 0.93), (0.45, 0.25), (0.4, 0.36)]
+coords = [(0.8, 0.05), (0.7, 0.5), (0.675, 0.2), (0.45, 0.25), (0.40, 0.36)]
 colors = ['magenta', 'green', 'blue', 'red', 'Black']
 
 # all p.d.f.'s to be displayed
@@ -598,7 +609,10 @@ for i in range(len(pdfs)):
     if (i == 4):
         cntr_all_chann_and_flavour = cntr
         
-    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=17)
+    if (i == 2):  # flavour-specific -> label at an angle
+	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', horizontalalignment='center', color=colors[i], fontsize=17, rotation=59)
+    else:
+	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=17)
 
 
 ## SM prediction
@@ -642,7 +656,7 @@ saveplt(plt, name='Gs_vs_DGs')
 # In[ ]:
 
 # lists of colours, labels, experiment channels, coordinates of labels
-coords = [(0.5, 0.82), (0.95, 0.5), (0.9, 0.2), (0.45, 0.3), (0.42, 0.42)]
+coords = [(0.5, 0.82), (0.95, 0.5), (1.56, 1.54), (0.45, 0.3), (0.4, 0.42)]
 
 # all p.d.f.'s to be displayed (-2 log computed for all except one already with -2 log)
 pdfs = [CP_even_tau, CP_odd_tau, flavour_specific_tau]
@@ -668,7 +682,11 @@ for i in range(len(coords)):
 	else:
 	    plt.contour(tau_L, tau_H, dlnL, levels=[1.], alpha=0.8, colors=colors[i], linewidths=1)
 
-    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', 
+    if (i == 2):  # flavour-specific -- draw at an angle
+	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', 
+             horizontalalignment='center', color=colors[i], fontsize=17, rotation=-45)
+    else:
+	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', 
              horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=17)
 
 def extract_pyplot_contour(cs, which=1):
