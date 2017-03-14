@@ -8,6 +8,7 @@
 # useful visualisation and numerical tools
 import matplotlib.pyplot as plt
 import numpy as np
+from math import sqrt
 import matplotlib.patches as patches
 #import matplotlib.rcParams as rcParams
 import matplotlib
@@ -52,11 +53,11 @@ for exp in experiments:
 # + LHCb-PAPER-2017-008 (JpsiKK high mass) + DsDs
 # combination of  LHCb-PAPER-2017-008 and  http://arxiv.org/abs/1409.4619 :
 phisDsDs = 0.02 # http://arxiv.org/abs/1409.4619
-ephisDsDs = np.sqrt(0.17**2+0.02**2)
+ephisDsDs = sqrt(0.17**2+0.02**2)
 phisJpsihh = 0.0007 # LHCb-PAPER-2017-008
 ephisJpsihh = 0.0373
 
-ephisJpsihh_DsDs = np.sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
+ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
 phisJpsihh_DsDs = ephisJpsihh**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
 # phisJpsihh_DsDs = 0.00165 pm 0.0364
 
@@ -196,11 +197,12 @@ for exp in experiments:
     for param in ["Gs", "DGs", "phis"]:
         val[exp][param+"_etot"] = etot(exp, param)
     # Dangerous, to be improved:
-    if exp not in ["LHCb_Jpsi_hh"]:  # skip hard-coded tot correl
+    if exp not in ["LHCb_JPsi_hh"]:  # skip hard-coded tot correl
+        print " HERE1 ", exp 
         val[exp]["rho_Gs_DGs_tot"] = rho(exp, "Gs", "DGs")
   
     # Dangerous, to be improved:
-    if exp not in ["CDF", "D0", "LHCb_Jpsi_hh"]:  # skip hard-coded tot correl
+    if exp not in ["CDF", "D0", "LHCb_JPsi_hh"]:  # skip hard-coded tot correl
         val[exp]["rho_phis_DGs_tot"] = rho(exp, "phis", "DGs")
 
 
@@ -224,7 +226,7 @@ def gaussian2D(x, y, x0, xsig, y0, ysig, rho):
     else:
      return 0
 
-# In[ ]:
+
 
 def jointPDF(x, y, pm, exps):
     """Returns product of 2-dim Gaussians from all experiments considered
@@ -347,6 +349,8 @@ m = Minimiser(func, fitParams, fname=outputFile, header="Result from the global 
 X = np.linspace(-1.2, 0.4, 1000)
 Y = np.linspace(0, 0.3, 1000)
 X, Y = np.meshgrid(X, Y)
+
+print "################### CHECK ", val["LHCb_JPsi_hh"]['rho_Gs_DGs_tot'] 
 
 # lists of colours, labels, experiment channels, coordinates of labels
 lhcb_channels = experiments[0:2]
