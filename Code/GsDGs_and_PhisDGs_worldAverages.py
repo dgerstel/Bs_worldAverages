@@ -368,7 +368,7 @@ plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 
 # plt.show()
 def saveplt(plt, name):
-    for suffix in ['png', 'pdf', 'eps', 'jpg']:
+    for suffix in ['png', 'pdf', 'eps']:#, 'jpg']:
         plt.savefig(ResDir + name + '.' + suffix, bbox_inches='tight')  
         
 saveplt(plt, name='Phis_vs_DGs')
