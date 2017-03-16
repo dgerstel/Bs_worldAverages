@@ -595,7 +595,7 @@ X, Y = np.meshgrid(X, Y)
 channels = [experiments]
 labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
           r"$\tau (B^{0}_{s} \rightarrow J/\psi \pi \pi,$"+"\n"+r"$J/\psi f_0)$",
-          r"$\tau(B^{0}_{s} \rightarrow$ flavour specific)", 
+          r"$\tau(B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific)$ ", 
           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
 
 coords = [(0.8, 0.05), (0.75, 0.5), (0.675, 0.2), (0.45, 0.25), (0.40, 0.36)]
@@ -748,7 +748,7 @@ plt.plot(taul_achf, tauh_achf, color=colors[4])
 #plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
     #transform=ax.transAxes, color='k', fontsize=16)
 #plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 0.5)", verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color='k', fontsize=18)
-plt.title(r"Contours of $\Delta$(log $\mathcal{L}$) = 0.5", fontsize=25)
+plt.title(r"$\rm$ Contours of $\Delta$(log $\mathcal{L}$) = 0.5", fontsize=25)
 
 # Display ranges and axes ticks; axes titles
 plt.axis([tauLmin, tauLmax, tauHmin, tauHmax])
