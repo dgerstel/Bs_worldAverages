@@ -10,18 +10,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from math import sqrt
 import matplotlib.patches as patches
-#import matplotlib.rcParams as rcParams
+import matplotlib.ticker as ticker
 import matplotlib
 from iminuit import Minuit, describe, Struct, util
+import warnings
 
-#from matplotlib import rc
-#rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
-## for Palatino and other serif fonts use:
-#rc('font',**{'family':'serif','serif':['Palatino']})
-#rc('text', usetex=True)
+# LaTeX font for matplotlib
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
-#matplotlib.rcParams['mathtext.fontset'] = 'dejavu'
-#matplotlib.rcParams['mathtext.fontset'] = 'dejavusans'
 
 # Directory of all results (pictures and txt)
 ResDir = "../Results/"
@@ -70,11 +65,11 @@ val["LHCb_JPsi_hh"]['Gs_esyst']          = 0.0015
 val["LHCb_JPsi_hh"]['DGs']               = 0.0813
 val["LHCb_JPsi_hh"]['DGs_estat']         = 0.0073
 val["LHCb_JPsi_hh"]['DGs_esyst']         = 0.0036
-val["LHCb_JPsi_hh"]['rho_Gs_DGs_stat']   = 0  # only tot provided below
-val["LHCb_JPsi_hh"]['rho_Gs_DGs_syst']   = 0  # only tot provided below
+val["LHCb_JPsi_hh"]['rho_Gs_DGs_stat']   = None  # only tot provided below
+val["LHCb_JPsi_hh"]['rho_Gs_DGs_syst']   = None  # only tot provided below
 val["LHCb_JPsi_hh"]['rho_Gs_DGs_tot']    = -0.13 
-val["LHCb_JPsi_hh"]['rho_phis_DGs_stat'] = 0  # only tot provided below
-val["LHCb_JPsi_hh"]['rho_phis_DGs_syst'] = 0  # only tot provided below
+val["LHCb_JPsi_hh"]['rho_phis_DGs_stat'] = None  # only tot provided below
+val["LHCb_JPsi_hh"]['rho_phis_DGs_syst'] = None  # only tot provided below
 val["LHCb_JPsi_hh"]['rho_phis_DGs_tot']  = -0.05  # hard-coded
 
 # === LHCb J/Psi KK above the phi (High Mass), 3fb-1 data ===
@@ -88,11 +83,11 @@ val["LHCb_JPsi_hh"]['rho_phis_DGs_tot']  = -0.05  # hard-coded
 # val["LHCb_JPsi_KKHM"]['DGs']               = 0.066
 # val["LHCb_JPsi_KKHM"]['DGs_estat']         = 0.018
 # val["LHCb_JPsi_KKHM"]['DGs_esyst']         = 0.010
-# val["LHCb_JPsi_KKHM"]['rho_Gs_DGs_stat']   = 0.0 # tot
-# val["LHCb_JPsi_KKHM"]['rho_Gs_DGs_syst']   = 0
+# val["LHCb_JPsi_KKHM"]['rho_Gs_DGs_stat']   = None # only tot provided below
+# val["LHCb_JPsi_KKHM"]['rho_Gs_DGs_syst']   = None # only tot provided below
 # val["LHCb_JPsi_KKHM"]['rho_Gs_DGs_tot']    = 0.54
-# val["LHCb_JPsi_KKHM"]['rho_phis_DGs_stat'] = 0  # 
-# val["LHCb_JPsi_KKHM"]['rho_phis_DGs_syst'] = 0  # 
+# val["LHCb_JPsi_KKHM"]['rho_phis_DGs_stat'] = None # only tot provided below
+# val["LHCb_JPsi_KKHM"]['rho_phis_DGs_syst'] = None  # only tot provided below
 # val["LHCb_JPsi_KKHM"]['rho_phis_DGs_tot']  = 0.02  # hard-coded
 
 
@@ -107,7 +102,7 @@ val["LHCb_Psi2S_Phi"]['DGs']               = .066
 val["LHCb_Psi2S_Phi"]['DGs_estat']         = .0425
 val["LHCb_Psi2S_Phi"]['DGs_esyst']         = .007  
 val["LHCb_Psi2S_Phi"]['rho_Gs_DGs_stat']   = -.4
-val["LHCb_Psi2S_Phi"]['rho_Gs_DGs_syst']   = 0  
+val["LHCb_Psi2S_Phi"]['rho_Gs_DGs_syst']   = 0 # assume no corr...
 val["LHCb_Psi2S_Phi"]['rho_phis_DGs_stat'] = 0.19
 val["LHCb_Psi2S_Phi"]['rho_phis_DGs_syst'] = 0 # assume no corr...
 
@@ -124,7 +119,7 @@ val["ATLAS"]['DGs']               = .085
 val["ATLAS"]['DGs_estat']         = .011
 val["ATLAS"]['DGs_esyst']         = .007
 val["ATLAS"]['rho_Gs_DGs_stat']   = -.414
-val["ATLAS"]['rho_Gs_DGs_syst']   = 0
+val["ATLAS"]['rho_Gs_DGs_syst']   = 0 # assume no correlation
 val["ATLAS"]['rho_phis_DGs_stat'] = 0.097
 val["ATLAS"]['rho_phis_DGs_syst'] = 0  # assume no correlation
 
@@ -155,8 +150,9 @@ val["CMS"]['rho_phis_DGs_syst'] = 0  # assume no correlated systematics between 
 # Taken from Phys.Rev.Lett 109,171802 (2012), assuming phis Gaussian
 # and centered (phis vs DGs)
 val["CDF"]['phis']             = -0.24
-val["CDF"]['phis_estat']       = 0.36  # Trick 
-val["CDF"]['phis_esyst']       = 0     # Trick
+val["CDF"]['phis_estat']       = None # Only tot provided below
+val["CDF"]['phis_esyst']       = None # Only tot provided below
+val["CDF"]['phis_etot']        = 0.36
 val["CDF"]['Gs']               = 0.65445026178
 val["CDF"]['Gs_estat']         = 0.0081377977577
 val["CDF"]['Gs_esyst']         = 0.0038547463
@@ -165,13 +161,16 @@ val["CDF"]['DGs_estat']        = 0.026
 val["CDF"]['DGs_esyst']        = 0.009
 val["CDF"]['rho_Gs_DGs_stat']  = -0.52 
 val["CDF"]['rho_Gs_DGs_syst']  = 0 # assume no correlated systematics between Gs and DGs 
+val["CDF"]['rho_phis_DGs_stat'] = None # Only tot provided below
+val["CDF"]['rho_phis_DGs_syst'] = None # Only tot provided below
 val["CDF"]['rho_phis_DGs_tot'] = 0  # hard-coded
 
 # === D0 params ===
 # Taken from Phys Rev D 85, 032006 (2011)
 val["D0"]['phis']             = -0.55
-val["D0"]['phis_estat']       = 0.37  # trick
-val["D0"]['phis_esyst']       = 0
+val["D0"]['phis_estat']       = None # Only tot provided below
+val["D0"]['phis_esyst']       = None # Only tot provided below
+val["D0"]['phis_etot']        = 0.37
 val["D0"]['Gs']               = 0.6930
 val["D0"]['Gs_estat']         = 0.017529
 val["D0"]['Gs_esyst']         = 0.  
@@ -180,6 +179,8 @@ val["D0"]['DGs_estat']        = 0.0645
 val["D0"]['DGs_esyst']        = 0.0
 val["D0"]['rho_Gs_DGs_stat']  = -0.05
 val["D0"]['rho_Gs_DGs_syst']  = 0 # assume no correlated systematics between Gs and DGs 
+val["D0"]['rho_phis_DGs_stat'] = None # Only tot provided below
+val["D0"]['rho_phis_DGs_syst'] = None # Only tot provided below
 val["D0"]['rho_phis_DGs_tot'] = -0.05  # hard-coded
 # ============================================================================================
 
@@ -193,22 +194,19 @@ def rho(exp, param1, param2):
             val[exp][param1+"_esyst"] * val[exp][param2+"_esyst"] * val[exp]["rho_"+param1+"_"+param2+"_syst"])/\
             (val[exp][param1+"_etot"] * val[exp][param2+"_etot"])
 
+# Compute etot's and rho_tot's skipping the hard-coded ones
 for exp in experiments:
     for param in ["Gs", "DGs", "phis"]:
-        val[exp][param+"_etot"] = etot(exp, param)
-    # Dangerous, to be improved:
-    if exp not in ["LHCb_JPsi_hh"]:  # skip hard-coded tot correl
-        print " HERE1 ", exp 
-        val[exp]["rho_Gs_DGs_tot"] = rho(exp, "Gs", "DGs")
-  
-    # Dangerous, to be improved:
-    if exp not in ["CDF", "D0", "LHCb_JPsi_hh"]:  # skip hard-coded tot correl
-        val[exp]["rho_phis_DGs_tot"] = rho(exp, "phis", "DGs")
+         if ((val[exp][param + "_estat"] != None) and (val[exp][param + "_esyst"] != None)):
+              val[exp][param+"_etot"] = etot(exp, param)
+    if ((val[exp]["rho_Gs_DGs_stat"] != None) and (val[exp]["rho_Gs_DGs_syst"] != None)):
+         val[exp]["rho_Gs_DGs_tot"] = rho(exp, "Gs", "DGs")
+    if ((val[exp]["rho_phis_DGs_stat"] != None) and (val[exp]["rho_phis_DGs_syst"] != None)):
+         val[exp]["rho_phis_DGs_tot"] = rho(exp, "phis", "DGs")
 
 
 # ### p.d.f.'s for the experiments
 
-# In[ ]:
 
 def gaussian2D(x, y, x0, xsig, y0, ysig, rho):
     """Joint p.d.f. of Gs and DGs for JPsi_Phi-like channels
@@ -243,8 +241,12 @@ def jointPDF(x, y, pm, exps):
                     val[exp][pm[1]], val[exp][pm[1]+"_etot"], val[exp]["rho_"+pm[0]+"_"+pm[1]+"_tot"])
     return res        
     
-
-def jointPDFlog(x, y, pm, exps): return -2 * np.log(jointPDF(x, y, pm, exps))
+def jointPDFlog(x, y, pm, exps): 
+    # zero division error, but does not matter for minimisation
+    with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+	    pdflog = -2 * np.log(jointPDF(x, y, pm, exps))
+    return pdflog
 
 
 # # Analysis of $\Delta \Gamma_{s}$ and $\phi_{s}^{c\bar{c}s}$
@@ -252,7 +254,6 @@ def jointPDFlog(x, y, pm, exps): return -2 * np.log(jointPDF(x, y, pm, exps))
 # ### Minimisation with Minuit (migrad, minos)
 ###########################################################################################################
 
-# In[ ]:
 
 
 class Maxlikelihood(object):
@@ -336,21 +337,18 @@ class Minimiser(object):
                 print >>f, "rho(", parnames[0], ", ", parnames[1], ") = ", rho
                 
 # starting values for the Phis, DGs parameters
-fitParams = dict(x=-0.3, y=0.085, error_x=0.0325, error_y=0.0065, limit_x=None, limit_y=None)
+fitParams = dict(x=-0.3, y=0.085, error_x=0.0325, error_y=0.0065, limit_x=None, limit_y=None, errordef=1)
 parnames = ('phis', 'DGs')
 func = Maxlikelihood(par=parnames, exps=experiments)
 m = Minimiser(func, fitParams, fname=outputFile, header="Result from the global fit:", parnames=parnames)
 ###########################################################################################
 # ### Contour plots
 
-# In[ ]:
 
 # grid
 X = np.linspace(-1.2, 0.4, 1000)
 Y = np.linspace(0, 0.3, 1000)
 X, Y = np.meshgrid(X, Y)
-
-print "################### CHECK ", val["LHCb_JPsi_hh"]['rho_Gs_DGs_tot'] 
 
 # lists of colours, labels, experiment channels, coordinates of labels
 lhcb_channels = experiments[0:2]
@@ -370,10 +368,11 @@ for i in range(len(channels)):
     plt.contourf(X, Y, dlnL, levels=[0, 2.30], alpha=0.5, colors=colors[i])
     plt.contour(X, Y, dlnL, levels=[0, 2.30], alpha=1, colors=colors[i], linewidths=2)
     plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right',
-        transform=ax.transAxes, color=colors[i], fontsize=15)
+        transform=ax.transAxes, color=colors[i], fontsize=25)
     
 # SM theoretical prediction (all errors > 0 for convenience)
-phis_SM, phis_SM_err_down, phis_SM_err_up = -0.0376, 0.0007, 0.0008
+# CKM fitter, Dec 2016
+phis_SM, phis_SM_err_down, phis_SM_err_up = -0.03704, 0.00064, 0.00064
 DGs_SM, DGs_SM_err_down, DGs_SM_err_up = 0.088, 0.020, 0.020
 
 # draw rectangle for SM
@@ -394,10 +393,10 @@ plt.text(0.515, 0.5, "SM", verticalalignment='bottom', horizontalalignment='righ
 
 
 # Add plot description
-plt.text(0.95, 0.70, "68% CL contours", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=16)
-plt.text(0.95, 0.65, r"($\Delta$ log $\mathcal{L}$ = 1.15)", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=18)
+plt.text(0.95, 0.78, "68% CL contours", verticalalignment='bottom', horizontalalignment='right',
+    transform=ax.transAxes, color='k', fontsize=21)
+plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 1.15)", verticalalignment='bottom', horizontalalignment='right',
+    transform=ax.transAxes, color='k', fontsize=21)
 
 # Display ranges and axes ticks; axes titles
 phismin, phismax, DGsmin, DGsmax = (-0.5, 0.5, 0.05, 0.15)
@@ -405,14 +404,26 @@ plt.axis([phismin, phismax, DGsmin, DGsmax])
 plt.xticks(np.arange(phismin, phismax, .05))
 plt.yticks(np.arange(DGsmin, DGsmax, .005))
 
-# hide every other tick-label
-def hide_half_labels(ax):
-    for label in ax.get_xticklabels()[1::2]:
-        label.set_visible(False)
-    for label in ax.get_yticklabels()[1::2]:
-        label.set_visible(False)    
+# hide some labels
+for label in ax.get_xticklabels():
+    label.set_visible(False)
+for label in ax.get_yticklabels():
+    label.set_visible(False)
+for label in ax.get_xticklabels()[1::4]:
+    label.set_visible(True)
+for label in ax.get_yticklabels()[1::4]:
+    label.set_visible(True)    
 
-hide_half_labels(ax)
+for tick in ax.xaxis.get_major_ticks():
+    tick.label.set_fontsize(20)
+for tick in ax.yaxis.get_major_ticks():
+    tick.label.set_fontsize(20)
+
+ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
+ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+
+ax.xaxis.set_label_coords(0.93, -0.07)
+ax.yaxis.set_label_coords(-0.09, 0.87)
 
 # Axes settings and labels    
 ax.set_autoscale_on(False)
@@ -421,8 +432,8 @@ plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 
 def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
     # (1) black rectangle
-    dx = 0.12*(plotWidth)
-    dy = 0.10 *(plotHeight)
+    dx = 0.18*(plotWidth)
+    dy = 0.12 *(plotHeight)
     #x, y, dx, dy = (0.3, 0.14, 0.1, 0.01)
     x, y = leftBottom
     cosmetics = {'linewidth':1, 'edgecolor':'k', 'facecolor':'k'}
@@ -436,12 +447,12 @@ def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
     ax.add_patch(whr)
     # (3) HFAG text
     plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFAG", verticalalignment='center', horizontalalignment='center',
-        color='w', fontsize=15, fontstyle='italic', fontweight='light')
+        color='w', fontsize=18, fontstyle='italic', fontweight='light')
     # (4) edition (=season+year) text
     plt.text(x+.5*dx, y+ddy+0.5*height_w, "Spring 2017", verticalalignment='center', horizontalalignment='center',
-        color='k', fontsize=8, fontstyle='italic', fontweight='light')
+        color='k', fontsize=11, fontstyle='italic', fontweight='light')
 
-drawHFAGlogo(leftBottom=(0.35, 0.125), plotWidth=(phismax-phismin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(0.3, 0.135), plotWidth=(phismax-phismin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 
 # plt.show()
 def saveplt(plt, name):
@@ -457,7 +468,6 @@ saveplt(plt, name='Phis_vs_DGs')
 # # Analysis of $\Delta \Gamma_{s}$ and $\Gamma_{s}$
 
 # ### Input data (flavour-specific and CP-related) and p.d.f.'s
-# In[ ]:
 # (* tauDsDs constraint, only LHCb.  tauDsDs = tauL(1+phis^2 ys/2 )*)
 tauDsDs1 = 1.37900
 etauDsDs1 = 0.03106
@@ -552,8 +562,7 @@ def print_tau_fit(m, fname):
 
 # starting values for the Gs, DGs parameters
 parnames = ('Gs', 'DGs')
-#fitParams = dict(x=.664, y=0.085, error_x=0.0022, error_y=0.0065, limit_x=None, limit_y=None)
-fitParams = dict(x=.664, y=0.085, error_x=0.0022, error_y=0.006, limit_x=None, limit_y=None)
+fitParams = dict(x=.664, y=0.085, error_x=0.0022, error_y=0.006, limit_x=None, limit_y=None, errordef=1)
 
 # (J/PSI hh only)
 func = Maxlikelihood(par=parnames, exps=experiments, pdf=hadronic)
@@ -575,10 +584,9 @@ print_tau_fit(m, outputFile)
 ##############################################################################################
 # ### Contour plots
 
-# In[ ]:
 
 # grid
-Gsmin, Gsmax, DGsmin, DGsmax = (0.62, 0.75, 0, 0.25)
+Gsmin, Gsmax, DGsmin, DGsmax = (0.62, 0.75, 0, 0.255) # DGsmax a bit more
 X = np.linspace(Gsmin, Gsmax, 1000)
 Y = np.linspace(DGsmin, DGsmax, 1000)
 X, Y = np.meshgrid(X, Y)
@@ -590,7 +598,7 @@ labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
           r"$\tau(B^{0}_{s} \rightarrow$ flavour specific)", 
           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
 
-coords = [(0.8, 0.05), (0.7, 0.5), (0.675, 0.2), (0.45, 0.25), (0.40, 0.36)]
+coords = [(0.8, 0.05), (0.75, 0.5), (0.675, 0.2), (0.45, 0.25), (0.40, 0.36)]
 colors = ['magenta', 'green', 'blue', 'red', 'Black']
 
 # all p.d.f.'s to be displayed
@@ -600,7 +608,10 @@ fig, ax = plt.subplots(1, figsize=(10,9))
 
 # Draw contours
 for i in range(len(pdfs)):
-    lnL = -2 * np.log(pdfs[i](X, Y))
+    # zero division error, but does not matter for minimisation
+    with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+	    lnL = -2 * np.log(pdfs[i](X, Y))
     dlnL = lnL - np.min(lnL)
     # contour 1 <-> 39% confidence interval on 2 delta log likelihood
     # filled in contours and then edge contours (for pretty display)
@@ -614,9 +625,9 @@ for i in range(len(pdfs)):
         cntr_all_chann_and_flavour = cntr
         
     if (i == 2):  # flavour-specific -> label at an angle
-	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', horizontalalignment='center', color=colors[i], fontsize=17, rotation=59)
+	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', horizontalalignment='center', color=colors[i], fontsize=18, rotation=59)
     else:
-	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=17)
+	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=25)
 
 
 ## SM prediction
@@ -631,36 +642,59 @@ rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
 # Add the rectangle to the axes
 ax.add_patch(rec)
 plt.text(0.9, 0.32, s="Theory", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=15)
+    transform=ax.transAxes, color='k', fontsize=25)
 
 # Add plot description
-plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=16)
-plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 0.5)", verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color='k', fontsize=18)
+#plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
+    #transform=ax.transAxes, color='k', fontsize=16)
+#plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 0.5)", verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color='k', fontsize=18)
 
 # Display ranges and axes ticks; axes titles
 plt.axis([Gsmin, Gsmax, DGsmin, DGsmax])
-plt.xticks(np.arange(Gsmin, Gsmax, .01))
-plt.yticks(np.arange(DGsmin, DGsmax, .02))
+plt.xticks(np.arange(Gsmin, Gsmax, .005))
+plt.yticks(np.arange(DGsmin, DGsmax, .01))
 
-hide_half_labels(ax)
+plt.title(r"Contours of $\Delta$(log $\mathcal{L}$) = 0.5", fontsize=25)
+
+#hide_half_labels(ax)
 
 # Axes settings and labels    
 ax.set_autoscale_on(False)
 plt.xlabel(r'$\Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
+# hide some labels
+for label in ax.get_xticklabels():
+    label.set_visible(False)
+for label in ax.get_yticklabels():
+    label.set_visible(False)
+for label in ax.get_xticklabels()[0::8]:
+    label.set_visible(True)
+for label in ax.get_yticklabels()[0::5]:
+    label.set_visible(True)    
+
+for tick in ax.xaxis.get_major_ticks():
+    tick.label.set_fontsize(20)
+for tick in ax.yaxis.get_major_ticks():
+    tick.label.set_fontsize(20)
+
+ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+
+ax.xaxis.set_label_coords(0.93, -0.07)
+ax.yaxis.set_label_coords(-0.09, 0.87)
 
 # Draw HFAG logo
-drawHFAGlogo(leftBottom=(0.73,0.2), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(0.63,0.2), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 saveplt(plt, name='Gs_vs_DGs')
 
 
+##################################################################################################
 # ### Analysis in terms of lifetimes
+##################################################################################################
 
-# In[ ]:
 
 # lists of colours, labels, experiment channels, coordinates of labels
-coords = [(0.5, 0.82), (0.95, 0.5), (1.56, 1.54), (0.45, 0.3), (0.4, 0.42)]
+coords = [(0.4, 0.82), (0.95, 0.6), (1.56, 1.54), (0.45, 0.3), (0.4, 0.42)]
 
 # all p.d.f.'s to be displayed (-2 log computed for all except one already with -2 log)
 pdfs = [CP_even_tau, CP_odd_tau, flavour_specific_tau]
@@ -688,10 +722,10 @@ for i in range(len(coords)):
 
     if (i == 2):  # flavour-specific -- draw at an angle
 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', 
-             horizontalalignment='center', color=colors[i], fontsize=17, rotation=-45)
+             horizontalalignment='center', color=colors[i], fontsize=25, rotation=-45)
     else:
 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', 
-             horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=17)
+             horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=25)
 
 def extract_pyplot_contour(cs, which=1):
     #for level in range(len(cs)):
@@ -707,13 +741,14 @@ taul_ach, tauh_ach = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann)
 taul_achf, tauh_achf = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann_and_flavour))
 
 # Fill contour for all experiments without (with) flavours
-plt.fill(taul_ach, tauh_ach, color=colors[3], alpha=0.8)
-plt.fill(taul_achf, tauh_achf, color=colors[4], alpha=0.8)
+plt.plot(taul_ach, tauh_ach, color=colors[3])
+plt.plot(taul_achf, tauh_achf, color=colors[4])
 
 # Add plot description
-plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=16)
-plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 0.5)", verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color='k', fontsize=18)
+#plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
+    #transform=ax.transAxes, color='k', fontsize=16)
+#plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 0.5)", verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color='k', fontsize=18)
+plt.title(r"Contours of $\Delta$(log $\mathcal{L}$) = 0.5", fontsize=25)
 
 # Display ranges and axes ticks; axes titles
 plt.axis([tauLmin, tauLmax, tauHmin, tauHmax])
@@ -721,13 +756,28 @@ plt.axis([tauLmin, tauLmax, tauHmin, tauHmax])
 ax.set_autoscale_on(False)
 plt.xticks(np.arange(tauLmin, tauLmax, .02))
 plt.yticks(np.arange(tauHmin, tauHmax, .02))
-# hide every other tick-label
-for label in ax.get_xticklabels()[1::2]:
+# hide some labels
+for label in ax.get_xticklabels():
     label.set_visible(False)
-for label in ax.get_yticklabels()[1::2]:
-    label.set_visible(False)    
+for label in ax.get_yticklabels():
+    label.set_visible(False)
+for label in ax.get_xticklabels()[3::5]:
+    label.set_visible(True)
+for label in ax.get_yticklabels()[3::5]:
+    label.set_visible(True)    
+
+for tick in ax.xaxis.get_major_ticks():
+    tick.label.set_fontsize(20)
+for tick in ax.yaxis.get_major_ticks():
+    tick.label.set_fontsize(20)
+
 plt.xlabel(r'$1/\Gamma_{s {\rm L}}[\mathrm{ps}]$', fontsize=26)
 plt.ylabel(r'$1/\Gamma_{s {\rm H}}[\mathrm{ps}]$', fontsize=26)
+ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
+ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
 
-drawHFAGlogo(leftBottom=(1.60, 1.775), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
+ax.xaxis.set_label_coords(0.9, -0.07)
+ax.yaxis.set_label_coords(-0.09, 0.9)
+
+drawHFAGlogo(leftBottom=(1.50, 1.775), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
 saveplt(plt, 'tauL_vs_tauH')
