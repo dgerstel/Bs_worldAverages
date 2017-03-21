@@ -219,18 +219,25 @@ etauFS1 = 0.014
 phis1 = 0.
 
 tauin = {}
-lifetimeMeas = ["DsDs", "JpsiEta", "FS"]
+lifetimeMeas = ["DsDs", "JpsiEta", "Jpsif0", "FS"]
 for lifet in lifetimeMeas:
     tauin[lifet] = {}
 
-tauin["DsDs"]["tau"]      = 1.37900
-tauin["DsDs"]["tau_etot"] =  0.03106
+tauin["DsDs"]["publi"]     = "Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; Phys Rev. Lett. 113, 211801 (2014), http://arxiv.org/abs/1409.4619"
+tauin["DsDs"]["tau"]       = 1.37900
+tauin["DsDs"]["tau_etot"]  =  0.03106
 
-tauin["JpsiEta"]["tau"]      = 1.65765
-tauin["JpsiEta"]["tau_etot"] =  0.03188
+tauin["JpsiEta"]["publi"]    = "LHCb JpsiEta" 
+tauin["JpsiEta"]["tau"]      = 1.479
+tauin["JpsiEta"]["tau_etot"] = 0.03573513677 
 
-tauin["FS"]["tau"]      = 1.516
-tauin["FS"]["tau_etot"] =  0.014
+tauin["Jpsif0"]["publi"]    = "CDF+LHCb Jpsif0"
+tauin["Jpsif0"]["tau"]      = 1.65765
+tauin["Jpsif0"]["tau_etot"] =  0.03188
+
+tauin["FS"]["publi"]      = "OS, COMBOS, including D0 DsMuX"
+tauin["FS"]["tau"]        = 1.516
+tauin["FS"]["tau_etot"]   = 0.014
 
 
 
@@ -248,7 +255,10 @@ for exp in experiments:
          inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + "(tot) \n" 
 inputString += "  \n"
 
-
+for  lifet in lifetimeMeas:
+ inputString += " === Experiment =================================================== \n"
+ inputString += tauin[lifet]["publi"] +"\n"
+ inputString += str(tauin[lifet]["tau"]) + "+/-" + str(tauin[lifet]["tau_etot"])+ " (tot)"
 
 inputString += "  \n"
 inputString += " ### Fit results ####################################### \n"
