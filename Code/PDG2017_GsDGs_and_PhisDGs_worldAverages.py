@@ -56,7 +56,7 @@ ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
 phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
 # phisJpsihh_DsDs =  -0.009 pm  0.0380 
 
-val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \n LHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs DecaysPhys; Rev. Lett. 113, 211801 (2014).'
+val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs DecaysPhys; Rev. Lett. 113, 211801 (2014).'
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
 val["LHCb_JPsi_hh"]['phis_estat']        = 0.
@@ -359,12 +359,25 @@ colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
 fig, ax = plt.subplots(1, figsize=(12,8))
 
 # display inputs
-print " ### Inputs ####################################### "
+inputString = ""
+inputString += " ### Inputs ####################################### \n"
 for exp in experiments:
- print " === Experiment =================================================== "
- print val[exp]["publi"]
-# for param in ["Gs", "DGs", "phis"]:
-#  print param = 
+ inputString += " === Experiment =================================================== \n"
+ inputString += val[exp]["publi"] +"\n"
+ for param in ["Gs", "DGs", "phis"]:
+     if ((val[exp][param + "_estat"] != None) and (val[exp][param + "_esyst"] != None)):
+         inputString += param + " = " + str(val[exp][param]) + "+/-"+  str(val[exp][param+"_estat"])+ \
+                        " (stat) +/-" + str(val[exp][param+"_esyst"]) + "(syst) \n" 
+     else:
+         inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + "(tot) \n" 
+inputString += "  \n"
+inputString += " ### Fit results ####################################### \n"
+
+         
+print inputString
+with open(outputFile, "w") as f:
+    print >>f, inputString
+
  
 #for i in range(len(channels)):
 #  print "test", [exper for exper in channels[i]]
