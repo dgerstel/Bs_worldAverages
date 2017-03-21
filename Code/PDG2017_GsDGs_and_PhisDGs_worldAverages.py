@@ -56,8 +56,7 @@ ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
 phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
 # phisJpsihh_DsDs =  -0.009 pm  0.0380 
 
-val["LHCb_JPsi_hh"]['publi']              = "LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015). \
-                                             LHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs DecaysPhys. Rev. Lett. 113, 211801 (2014)."
+val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \n LHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs DecaysPhys; Rev. Lett. 113, 211801 (2014).'
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
 val["LHCb_JPsi_hh"]['phis_estat']        = 0.
@@ -77,7 +76,7 @@ val["LHCb_JPsi_hh"]['rho_phis_DGs_tot']  = 0.0  # hard-coded
 
 
 # === LHCb Psi2S Phi data ===
-val["LHCb_Psi2S_Phi"]['publi']              = "LHCb, First study of the CP-violating phase and decay-width difference in B0s \to Psi(2S)Phi decays, Physics Letters B762 (2016) 253-262."
+val["LHCb_Psi2S_Phi"]['publi']              = "LHCb, First study of the CP-violating phase and decay-width difference in B0s to Psi(2S)Phi decays, Physics Letters B762 (2016) 253-262."
 
 val["LHCb_Psi2S_Phi"]['phis']              = 0.23
 val["LHCb_Psi2S_Phi"]['phis_estat']        = 0.285
@@ -96,6 +95,8 @@ val["LHCb_Psi2S_Phi"]['rho_phis_DGs_syst'] = 0 # assume no corr...
 
 # === ATLAS params ===
 # taking this from altas run1 published paper (concerns phis vs DGs)
+val["ATLAS"]['publi']              = "ATLAS, JHEP08(2016)147"
+
 val["ATLAS"]['phis']              = -0.090
 val["ATLAS"]['phis_estat']        = 0.078
 val["ATLAS"]['phis_esyst']        = 0.041
@@ -114,6 +115,8 @@ val["ATLAS"]['rho_phis_DGs_syst'] = 0  # assume no correlation
 # === CMS params ===
 # some computations needed:
 # published Phys.Lett.B 757,97 (2016), 20fb-1 8TeV only
+val["CMS"]['publi']              = "CMS, Phys.Lett.B 757,97 (2016)"
+
 clight = 299.792458
 ctauCMS = 447.2
 ctauCMSestat = 2.9
@@ -135,6 +138,8 @@ val["CMS"]['rho_phis_DGs_syst'] = 0  # assume no correlated systematics between 
 # === CDF params ===
 # Taken from Phys.Rev.Lett 109,171802 (2012), assuming phis Gaussian
 # and centered (phis vs DGs)
+val["CDF"]['publi']             = "CDF, Phys.Rev.Lett 109,171802 (2012)"
+
 val["CDF"]['phis']             = -0.24
 val["CDF"]['phis_estat']       = None # Only tot provided below
 val["CDF"]['phis_esyst']       = None # Only tot provided below
@@ -153,6 +158,8 @@ val["CDF"]['rho_phis_DGs_tot'] = 0  # hard-coded
 
 # === D0 params ===
 # Taken from Phys Rev D 85, 032006 (2011)
+val["D0"]['publi']             = "D0, Phys Rev D 85, 032006 (2011)"
+
 val["D0"]['phis']             = -0.55
 val["D0"]['phis_estat']       = None # Only tot provided below
 val["D0"]['phis_esyst']       = None # Only tot provided below
@@ -352,8 +359,15 @@ colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
 fig, ax = plt.subplots(1, figsize=(12,8))
 
 # display inputs
-for i in range(len(channels)):
-  print "test", [exper for exper in channels[i]]
+print " ### Inputs ####################################### "
+for exp in experiments:
+ print " === Experiment =================================================== "
+ print val[exp]["publi"]
+# for param in ["Gs", "DGs", "phis"]:
+#  print param = 
+ 
+#for i in range(len(channels)):
+#  print "test", [exper for exper in channels[i]]
 
 # Draw contours
 for i in range(len(channels)):
