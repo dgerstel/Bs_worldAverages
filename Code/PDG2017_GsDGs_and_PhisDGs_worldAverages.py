@@ -32,7 +32,7 @@ outputFile = ResDir + "Results_GsDGs_and_PhisDGs_PDG2017.txt"
 
 # Below, I considerd LHCb Psi2S Phi and LHCb J/Psihh as seperate experiments.
 # LHCb Jpsi hh means (PRL114, JpsiPiPi + JpsiKK around the phi mass, 3fb-!1)
-#   combined in LHCb-PAPER-2017-008
+#   combined with DsDs
 
 experiments = ["LHCb_Psi2S_Phi", "LHCb_JPsi_hh", "ATLAS", "CMS", "CDF", "D0"]
 
@@ -56,7 +56,7 @@ ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
 phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
 # phisJpsihh_DsDs =  -0.009 pm  0.0380 
 
-val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs DecaysPhys; Rev. Lett. 113, 211801 (2014).'
+val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; Phys Rev. Lett. 113, 211801 (2014).'
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
 val["LHCb_JPsi_hh"]['phis_estat']        = 0.
@@ -198,6 +198,67 @@ for exp in experiments:
          val[exp]["rho_phis_DGs_tot"] = rho(exp, "phis", "DGs")
 
 
+
+###########################################################################################
+# ### Input data (flavour-specific and CP-related) and p.d.f.'s
+# (* tauDsDs constraint, only LHCb.  tauDsDs = tauL(1+phis^2 ys/2 )*)
+tauDsDs1 = 1.37900
+etauDsDs1 = 0.03106
+# (* JpsiEta, LHCb ICHEP 2016, CP-even, tauL *)
+tauJpsiEta1 = 1.479
+etauJpsiEta1 = 0.03573513677
+# (*tauJpsif0 constraint,only CDF. tauJpsif0=tauH(1-phis^2 ys/2)*)
+# (* average of CDF, LHCb JpsiPiPi 1fb-1 and D0 2016 *)
+tauf01 = 1.65765
+etauf01 = 0.03188 
+
+# Flavour specific lifetime, including LakeLouis2017, tauFS (DsMuNu, LHCb)
+# computed by OS
+tauFS1 = 1.516
+etauFS1 = 0.014
+phis1 = 0.
+
+tauin = {}
+lifetimeMeas = ["DsDs", "JpsiEta", "FS"]
+for lifet in lifetimeMeas:
+    tauin[lifet] = {}
+
+tauin["DsDs"]["tau"]      = 1.37900
+tauin["DsDs"]["tau_etot"] =  0.03106
+
+tauin["JpsiEta"]["tau"]      = 1.65765
+tauin["JpsiEta"]["tau_etot"] =  0.03188
+
+tauin["FS"]["tau"]      = 1.516
+tauin["FS"]["tau_etot"] =  0.014
+
+
+
+# display inputs
+inputString = ""
+inputString += " ### Inputs ####################################### \n"
+for exp in experiments:
+ inputString += " === Experiment =================================================== \n"
+ inputString += val[exp]["publi"] +"\n"
+ for param in ["Gs", "DGs", "phis"]:
+     if ((val[exp][param + "_estat"] != None) and (val[exp][param + "_esyst"] != None)):
+         inputString += param + " = " + str(val[exp][param]) + "+/-"+  str(val[exp][param+"_estat"])+ \
+                        " (stat) +/-" + str(val[exp][param+"_esyst"]) + "(syst) \n" 
+     else:
+         inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + "(tot) \n" 
+inputString += "  \n"
+
+
+
+inputString += "  \n"
+inputString += " ### Fit results ####################################### \n"
+
+print inputString
+with open(outputFile, "w") as f:
+    print >>f, inputString
+#------------------------------------------------------------------------------------------
+
+
 # ### p.d.f.'s for the experiments
 
 
@@ -277,7 +338,7 @@ class Maxlikelihood(object):
 
 
 class Minimiser(object):
-    def __init__(self, fun_obj, fitParams, fname, fmode='w', header="", parnames=('x','y')):
+    def __init__(self, fun_obj, fitParams, fname, fmode='a', header="", parnames=('x','y')):
         self.minimise(fun_obj, fitParams)
         self.printall(fname, fmode, header, parnames)
 
@@ -328,11 +389,10 @@ class Minimiser(object):
                 print >>f, parnames[0], "=", x, "^{+", explus, "}_{", exminus, "}"
                 print >>f, parnames[1], "=", y, "^{+", eyplus, "}_{", eyminus, "}"
                 print >>f, "rho(", parnames[0], ", ", parnames[1], ") = ", rho
+
+
                 
 ###########################################################################################
-###########################################################################################
-
-
 
 
 # starting values for the Phis, DGs parameters
@@ -358,25 +418,8 @@ colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
 
 fig, ax = plt.subplots(1, figsize=(12,8))
 
-# display inputs
-inputString = ""
-inputString += " ### Inputs ####################################### \n"
-for exp in experiments:
- inputString += " === Experiment =================================================== \n"
- inputString += val[exp]["publi"] +"\n"
- for param in ["Gs", "DGs", "phis"]:
-     if ((val[exp][param + "_estat"] != None) and (val[exp][param + "_esyst"] != None)):
-         inputString += param + " = " + str(val[exp][param]) + "+/-"+  str(val[exp][param+"_estat"])+ \
-                        " (stat) +/-" + str(val[exp][param+"_esyst"]) + "(syst) \n" 
-     else:
-         inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + "(tot) \n" 
-inputString += "  \n"
-inputString += " ### Fit results ####################################### \n"
-
          
-print inputString
-with open(outputFile, "w") as f:
-    print >>f, inputString
+
 
  
 #for i in range(len(channels)):
@@ -490,23 +533,7 @@ saveplt(plt, name='Phis_vs_DGs')
 #############################################################################################
 # # Analysis of $\Delta \Gamma_{s}$ and $\Gamma_{s}$
 
-# ### Input data (flavour-specific and CP-related) and p.d.f.'s
-# (* tauDsDs constraint, only LHCb.  tauDsDs = tauL(1+phis^2 ys/2 )*)
-tauDsDs1 = 1.37900
-etauDsDs1 = 0.03106
-# (* JpsiEta, LHCb ICHEP 2016, CP-even, tauL *)
-tauJpsiEta1 = 1.479
-etauJpsiEta1 = 0.03573513677
-# (*tauJpsif0 constraint,only CDF. tauJpsif0=tauH(1-phis^2 ys/2)*)
-# (* average of CDF, LHCb JpsiPiPi 1fb-1 and D0 2016 *)
-tauf01 = 1.65765
-etauf01 = 0.03188 
 
-# Flavour specific lifetime, including LakeLouis2017, tauFS (DsMuNu, LHCb)
-# computed by OS
-tauFS1 = 1.516
-etauFS1 = 0.014
-phis1 = 0.
 
 def CP(x, y, tauCP, etauCP, phis, eta):
     """Generic joint pdf of Gs and DGs for CP-eigenstate channels (Bs2KK ??)"""
