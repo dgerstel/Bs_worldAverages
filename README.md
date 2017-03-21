@@ -53,4 +53,4 @@ in your .git/config change the line:
 "url = https://github.com/dgerstel/Bs_worldAverages.git" to this one:  
 "url = ssh://git@github.com/dgerstel/Bs_worldAverages.git"
 
-
+The above trick should also help to solve the problem of "git push" asking all the time your login and password -> your ssh key will be used instead. 
