@@ -77,7 +77,7 @@ val["LHCb_JPsi_hh"]['rho_phis_DGs_tot']  = 0.0  # hard-coded
 
 
 # === LHCb Psi2S Phi data ===
-val["LHCb_Psi2S_Phi"]['publi']              = "LHCb, First study of the CP-violating phase and decay-width difference in B0s \to Psi(2S)Phi decays, Physics Letters B762 (2016) 253–262."
+val["LHCb_Psi2S_Phi"]['publi']              = "LHCb, First study of the CP-violating phase and decay-width difference in B0s \to Psi(2S)Phi decays, Physics Letters B762 (2016) 253-262."
 
 val["LHCb_Psi2S_Phi"]['phis']              = 0.23
 val["LHCb_Psi2S_Phi"]['phis_estat']        = 0.285
@@ -327,6 +327,7 @@ class Minimiser(object):
 
 
 
+
 # starting values for the Phis, DGs parameters
 fitParams = dict(x=-0.3, y=0.085, error_x=0.0325, error_y=0.0065, limit_x=None, limit_y=None, errordef=1)
 parnames = ('phis', 'DGs')
@@ -349,6 +350,10 @@ coords = [(0.42, 0.1), (0.63, 0.8), (0.73, 0.6), (0.98, 0.2), (0.6, 0.45), (0.65
 colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
 
 fig, ax = plt.subplots(1, figsize=(12,8))
+
+# display inputs
+for i in range(len(channels)):
+  print "test", [exper for exper in channels[i]]
 
 # Draw contours
 for i in range(len(channels)):
