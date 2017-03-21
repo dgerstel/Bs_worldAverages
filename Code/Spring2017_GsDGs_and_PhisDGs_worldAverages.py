@@ -53,7 +53,7 @@ phisJpsihh = 0.0007 # LHCb-PAPER-2017-008
 ephisJpsihh = 0.0373
 
 ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
-phisJpsihh_DsDs = ephisJpsihh**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
+phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
 # phisJpsihh_DsDs = 0.00165 pm 0.0364
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
