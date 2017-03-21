@@ -46,16 +46,18 @@ for exp in experiments:
 
 # === INPUT DATA ==============================================================================
 # === LHCb J/Psi hh (PRL114, JpsiPiPi+JpsiKK 3fb-1) data ===
-# + LHCb-PAPER-2017-008 (JpsiKK high mass) + DsDs
-# combination of  LHCb-PAPER-2017-008 and  http://arxiv.org/abs/1409.4619 :
+# + DsDs http://arxiv.org/abs/1409.4619 :
 phisDsDs = 0.02 # http://arxiv.org/abs/1409.4619
 ephisDsDs = sqrt(0.17**2+0.02**2)
 phisJpsihh = -0.010 # (PRL114, JpsiPiPi+JpsiKK 3fb-1
 ephisJpsihh = 0.039
 
 ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
-phisJpsihh_DsDs = ephisJpsihh**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
+phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
 # phisJpsihh_DsDs =  -0.009 pm  0.0380 
+
+val["LHCb_JPsi_hh"]['publi']              = "LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015). \
+                                             LHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs DecaysPhys. Rev. Lett. 113, 211801 (2014)."
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
 val["LHCb_JPsi_hh"]['phis_estat']        = 0.
@@ -75,6 +77,8 @@ val["LHCb_JPsi_hh"]['rho_phis_DGs_tot']  = 0.0  # hard-coded
 
 
 # === LHCb Psi2S Phi data ===
+val["LHCb_Psi2S_Phi"]['publi']              = "LHCb, First study of the CP-violating phase and decay-width difference in B0s \to Psi(2S)Phi decays, Physics Letters B762 (2016) 253–262."
+
 val["LHCb_Psi2S_Phi"]['phis']              = 0.23
 val["LHCb_Psi2S_Phi"]['phis_estat']        = 0.285
 val["LHCb_Psi2S_Phi"]['phis_esyst']        = 0.02
@@ -318,6 +322,11 @@ class Minimiser(object):
                 print >>f, parnames[1], "=", y, "^{+", eyplus, "}_{", eyminus, "}"
                 print >>f, "rho(", parnames[0], ", ", parnames[1], ") = ", rho
                 
+###########################################################################################
+###########################################################################################
+
+
+
 # starting values for the Phis, DGs parameters
 fitParams = dict(x=-0.3, y=0.085, error_x=0.0325, error_y=0.0065, limit_x=None, limit_y=None, errordef=1)
 parnames = ('phis', 'DGs')
