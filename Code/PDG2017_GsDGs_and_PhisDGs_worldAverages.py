@@ -59,8 +59,9 @@ phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJps
 val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; \n Phys Rev. Lett. 113, 211801 (2014).'
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
-val["LHCb_JPsi_hh"]['phis_estat']        = 0.
-val["LHCb_JPsi_hh"]['phis_esyst']        = ephisJpsihh_DsDs # total from above 4 lines
+val["LHCb_JPsi_hh"]['phis_estat']        = None
+val["LHCb_JPsi_hh"]['phis_esyst']        = None
+val["LHCb_JPsi_hh"]['phis_etot']          = ephisJpsihh_DsDs # total from above 4 lines
 val["LHCb_JPsi_hh"]['Gs']                = 0.6588 # from LHCb-PAPER-2017-008
 val["LHCb_JPsi_hh"]['Gs_estat']          = 0.0022
 val["LHCb_JPsi_hh"]['Gs_esyst']          = 0.0015
@@ -252,16 +253,16 @@ for exp in experiments:
  for param in ["Gs", "DGs", "phis"]:
      if ((val[exp][param + "_estat"] != None) and (val[exp][param + "_esyst"] != None)):
          inputString += param + " = " + str(val[exp][param]) + "+/-"+  str(val[exp][param+"_estat"])+ \
-                        " (stat) +/-" + str(val[exp][param+"_esyst"]) + "(syst) \n" 
+                        " (stat) +/-" + str(val[exp][param+"_esyst"]) + " (syst) \n" 
      else:
-         inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + "(tot) \n" 
+         inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + " (tot) \n" 
 inputString += "  \n"
 
 inputString += " Lifetime inputs \n"
 for  lifet in lifetimeMeas:
  inputString += " === Experiment =================================================== \n"
  inputString += tauin[lifet]["publi"] +"\n"
- inputString += str(tauin[lifet]["tau"]) + "+/-" + str(tauin[lifet]["tau_etot"])+ " (tot) \n"
+ inputString += "tau = " + str(tauin[lifet]["tau"]) + "+/-" + str(tauin[lifet]["tau_etot"])+ " (tot) \n"
 
 inputString += "  \n"
 inputString += " ### Fit results ####################################### \n"
