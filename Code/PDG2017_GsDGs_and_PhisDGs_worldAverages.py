@@ -56,7 +56,7 @@ ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
 phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
 # phisJpsihh_DsDs =  -0.009 pm  0.0380 
 
-val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; Phys Rev. Lett. 113, 211801 (2014).'
+val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; \n Phys Rev. Lett. 113, 211801 (2014).'
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
 val["LHCb_JPsi_hh"]['phis_estat']        = 0.
@@ -201,21 +201,23 @@ for exp in experiments:
 
 ###########################################################################################
 # ### Input data (flavour-specific and CP-related) and p.d.f.'s
-# (* tauDsDs constraint, only LHCb.  tauDsDs = tauL(1+phis^2 ys/2 )*)
-tauDsDs1 = 1.37900
-etauDsDs1 = 0.03106
-# (* JpsiEta, LHCb ICHEP 2016, CP-even, tauL *)
-tauJpsiEta1 = 1.479
-etauJpsiEta1 = 0.03573513677
-# (*tauJpsif0 constraint,only CDF. tauJpsif0=tauH(1-phis^2 ys/2)*)
-# (* average of CDF, LHCb JpsiPiPi 1fb-1 and D0 2016 *)
-tauf01 = 1.65765
-etauf01 = 0.03188 
 
-# Flavour specific lifetime, including LakeLouis2017, tauFS (DsMuNu, LHCb)
-# computed by OS
-tauFS1 = 1.516
-etauFS1 = 0.014
+# # (* tauDsDs constraint, only LHCb.  tauDsDs = tauL(1+phis^2 ys/2 )*)
+# tauDsDs1 = 1.37900
+# etauDsDs1 = 0.03106
+# # (* JpsiEta, LHCb ICHEP 2016, CP-even, tauL *)
+# tauJpsiEta1 = 1.479
+# etauJpsiEta1 = 0.03573513677
+# # (*tauJpsif0 constraint,only CDF. tauJpsif0=tauH(1-phis^2 ys/2)*)
+# # (* average of CDF, LHCb JpsiPiPi 1fb-1 and D0 2016 *)
+# tauf01 = 1.65765
+# etauf01 = 0.03188 
+
+# # Flavour specific lifetime, including LakeLouis2017, tauFS (DsMuNu, LHCb)
+# # computed by OS
+# tauFS1 = 1.516
+# etauFS1 = 0.014
+
 phis1 = 0.
 
 tauin = {}
@@ -223,19 +225,19 @@ lifetimeMeas = ["DsDs", "JpsiEta", "Jpsif0", "FS"]
 for lifet in lifetimeMeas:
     tauin[lifet] = {}
 
-tauin["DsDs"]["publi"]     = "Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; Phys Rev. Lett. 113, 211801 (2014), http://arxiv.org/abs/1409.4619"
+tauin["DsDs"]["publi"]     = "DsDs, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; \n Phys Rev. Lett. 113, 211801 (2014), http://arxiv.org/abs/1409.4619"
 tauin["DsDs"]["tau"]       = 1.37900
 tauin["DsDs"]["tau_etot"]  =  0.03106
 
-tauin["JpsiEta"]["publi"]    = "LHCb JpsiEta" 
+tauin["JpsiEta"]["publi"]    = "JpsiEta, LHCb" 
 tauin["JpsiEta"]["tau"]      = 1.479
 tauin["JpsiEta"]["tau_etot"] = 0.03573513677 
 
-tauin["Jpsif0"]["publi"]    = "CDF+LHCb Jpsif0"
+tauin["Jpsif0"]["publi"]    = "Jpsif0 from CDF, D0 and LHCb JpsiPiPi 1fb-1"
 tauin["Jpsif0"]["tau"]      = 1.65765
 tauin["Jpsif0"]["tau_etot"] =  0.03188
 
-tauin["FS"]["publi"]      = "OS, COMBOS, including D0 DsMuX"
+tauin["FS"]["publi"]      = "tauFS, OS, COMBOS, including D0 DsMuX"
 tauin["FS"]["tau"]        = 1.516
 tauin["FS"]["tau_etot"]   = 0.014
 
@@ -255,10 +257,11 @@ for exp in experiments:
          inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + "(tot) \n" 
 inputString += "  \n"
 
+inputString += " Lifetime inputs \n"
 for  lifet in lifetimeMeas:
  inputString += " === Experiment =================================================== \n"
  inputString += tauin[lifet]["publi"] +"\n"
- inputString += str(tauin[lifet]["tau"]) + "+/-" + str(tauin[lifet]["tau_etot"])+ " (tot)"
+ inputString += str(tauin[lifet]["tau"]) + "+/-" + str(tauin[lifet]["tau_etot"])+ " (tot) \n"
 
 inputString += "  \n"
 inputString += " ### Fit results ####################################### \n"
@@ -409,7 +412,7 @@ class Minimiser(object):
 fitParams = dict(x=-0.3, y=0.085, error_x=0.0325, error_y=0.0065, limit_x=None, limit_y=None, errordef=1)
 parnames = ('phis', 'DGs')
 func = Maxlikelihood(par=parnames, exps=experiments)
-m = Minimiser(func, fitParams, fname=outputFile, header="Result from the global fit:", parnames=parnames)
+m = Minimiser(func, fitParams, fname=outputFile, header="Result from DGs - phi_s  fit:", parnames=parnames)
 ###########################################################################################
 # ### Contour plots
 
@@ -551,12 +554,12 @@ def CP(x, y, tauCP, etauCP, phis, eta):
                (1 + eta * phis ** 2 * y / (4 * x)) - tauCP) / etauCP) ** 2) 
 
 def CP_even(x, y):
-    return CP(x, y, tauDsDs1, etauDsDs1, phis1, eta=1) * CP(x, y, tauJpsiEta1, etauJpsiEta1, phis1, eta=1)
+    return CP(x, y, tauin["DsDs"]["tau"], tauin["DsDs"]["tau_etot"], phis1, eta=1) * CP(x, y, tauin["JpsiEta"]["tau"], tauin["JpsiEta"]["tau_etot"], phis1, eta=1)
 
 def CP_odd(x, y):
-    return CP(x, y, tauf01, etauf01, phis1, eta=-1)
+    return CP(x, y, tauin["Jpsif0"]["tau"], tauin["Jpsif0"]["tau_etot"], phis1, eta=-1)
 
-def flavour_specific(x, y, tauFS=tauFS1, etauFS=etauFS1):
+def flavour_specific(x, y, tauFS=tauin["FS"]["tau"], etauFS=tauin["FS"]["tau_etot"]):
     """Joint pdf of Gs and DGs for flavour-specific lifetime tauFS"""
     return 1 / (np.sqrt(2 * np.pi) * etauFS) * np.exp(-1. / 2 * ((1. / x * (1 + (y / (2 * x)) ** 2) / (1 - (y / (2 * x)) ** 2) - tauFS) / etauFS) ** 2)
     
@@ -570,7 +573,7 @@ def hadronic_and_lifetimes(x, y):
     
 def totpdf_Gs_DGs(x, y):
     """Total pdf, including JpsiKK, JpsiPipi, CP and flavour specific lifetimes"""
-    return hadronic_and_lifetimes(x, y) * flavour_specific(x, y, tauFS1, etauFS1)
+    return hadronic_and_lifetimes(x, y) * flavour_specific(x, y, tauin["FS"]["tau"], tauin["FS"]["tau"])
 
 # Change of variable to tau
 def CP_tau(x, y, tauCP, etauCP, phis, eta):
@@ -580,12 +583,12 @@ def CP_tau(x, y, tauCP, etauCP, phis, eta):
     return 1. / (np.sqrt(2 * np.pi) * etauCP) * np.exp( -1./2 * ( (-y*eta - tauCP)/etauCP )**2 )
 
 def CP_even_tau(x,y):
-    return CP_tau(x, y, tauDsDs1, etauDsDs1, phis1, eta=1) * CP_tau(x, y, tauJpsiEta1, etauJpsiEta1, phis1, eta=1)
+    return CP_tau(x, y, tauin["DsDs"]["tau"], tauin["DsDs"]["tau_etot"], phis1, eta=1) * CP_tau(x, y, tauin["JpsiEta"]["tau"], tauin["JpsiEta"]["tau_etot"], phis1, eta=1)
 
 def CP_odd_tau(x,y):
-    return CP_tau(x, y, tauf01, etauf01, phis1, -1)
+    return CP_tau(x, y, tauin["Jpsif0"]["tau"], tauin["Jpsif0"]["tau_etot"], phis1, -1)
 
-def flavour_specific_tau(x, y, tauFS=tauFS1, etauFS=etauFS1):
+def flavour_specific_tau(x, y, tauFS=tauin["FS"]["tau"], etauFS=tauin["FS"]["tau_etot"]):
     """Joint pdf of Gs and DGs for flavour-specific lifetime tauFS"""
     return 1 / (np.sqrt(2 * np.pi) * etauFS) * np.exp(-1. / 2 * ( ((x**2 + y**2)/(x+y) - tauFS )/etauFS)** 2)
 
