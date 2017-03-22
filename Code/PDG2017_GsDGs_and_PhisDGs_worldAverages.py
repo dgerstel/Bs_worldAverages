@@ -256,6 +256,9 @@ for exp in experiments:
                         " (stat) +/-" + str(val[exp][param+"_esyst"]) + " (syst) \n" 
      else:
          inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + " (tot) \n" 
+ for param in ["rho_phis_DGs_tot", "rho_Gs_DGs_tot"]:
+     inputString += param + " = " + str(val[exp][param]) + " \n" 
+
 inputString += "  \n"
 
 inputString += " Lifetime inputs \n"
