@@ -34,7 +34,7 @@ outputFile = ResDir + "Results_GsDGs_and_PhisDGs_PDG2017.txt"
 # LHCb Jpsi hh means (PRL114, JpsiPiPi + JpsiKK around the phi mass, 3fb-!1)
 #   combined with DsDs
 
-experiments = ["LHCb_Psi2S_Phi", "LHCb_JPsi_hh", "ATLAS", "CMS", "CDF", "D0"]
+experiments = ["LHCb_JPsi_hh", "LHCb_Psi2S_Phi", "ATLAS", "CMS", "CDF", "D0"]
 
 
 # params to be just read (not computed)
@@ -61,13 +61,13 @@ val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP V
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
 val["LHCb_JPsi_hh"]['phis_estat']        = None
 val["LHCb_JPsi_hh"]['phis_esyst']        = None
-val["LHCb_JPsi_hh"]['phis_etot']          = ephisJpsihh_DsDs # total from above 4 lines
-val["LHCb_JPsi_hh"]['Gs']                = 0.6588 # from LHCb-PAPER-2017-008
-val["LHCb_JPsi_hh"]['Gs_estat']          = 0.0022
+val["LHCb_JPsi_hh"]['phis_etot']         = ephisJpsihh_DsDs # total from above 4 lines
+val["LHCb_JPsi_hh"]['Gs']                = 0.6603
+val["LHCb_JPsi_hh"]['Gs_estat']          = 0.0027
 val["LHCb_JPsi_hh"]['Gs_esyst']          = 0.0015
-val["LHCb_JPsi_hh"]['DGs']               = 0.0813
-val["LHCb_JPsi_hh"]['DGs_estat']         = 0.0073
-val["LHCb_JPsi_hh"]['DGs_esyst']         = 0.0036
+val["LHCb_JPsi_hh"]['DGs']               = 0.0805
+val["LHCb_JPsi_hh"]['DGs_estat']         = 0.0091
+val["LHCb_JPsi_hh"]['DGs_esyst']         = 0.0032
 val["LHCb_JPsi_hh"]['rho_Gs_DGs_stat']   = -0.45  # only tot provided below
 val["LHCb_JPsi_hh"]['rho_Gs_DGs_syst']   = +0.44 # only tot provided below
 val["LHCb_JPsi_hh"]['rho_Gs_DGs_tot']    = -0.13 
