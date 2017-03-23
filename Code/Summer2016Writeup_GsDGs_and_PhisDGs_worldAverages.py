@@ -501,9 +501,9 @@ for label in ax.get_xticklabels():
     label.set_visible(False)
 for label in ax.get_yticklabels():
     label.set_visible(False)
-for label in ax.get_xticklabels()[1::4]:
+for label in ax.get_xticklabels()[2::4]:
     label.set_visible(True)
-for label in ax.get_yticklabels()[1::4]:
+for label in ax.get_yticklabels()[2::4]:
     label.set_visible(True)    
 
 for tick in ax.xaxis.get_major_ticks():

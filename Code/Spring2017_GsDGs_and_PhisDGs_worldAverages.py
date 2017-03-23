@@ -493,7 +493,8 @@ plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 1.15)", verticalalignment='
     transform=ax.transAxes, color='k', fontsize=21)
 
 # Display ranges and axes ticks; axes titles
-phismin, phismax, DGsmin, DGsmax = (-0.5, 0.5, 0.05, 0.15)
+phismin, phismax, DGsmin, DGsmax = (-0.50, 0.50, 0.05, 0.15)
+#phismin, phismax, DGsmin, DGsmax = (-0.45, 0.55, 0.045, 0.155)
 plt.axis([phismin, phismax, DGsmin, DGsmax])
 plt.xticks(np.arange(phismin, phismax, .05))
 plt.yticks(np.arange(DGsmin, DGsmax, .005))
@@ -503,10 +504,12 @@ for label in ax.get_xticklabels():
     label.set_visible(False)
 for label in ax.get_yticklabels():
     label.set_visible(False)
-for label in ax.get_xticklabels()[1::4]:
+for label in ax.get_xticklabels()[2::4]:
     label.set_visible(True)
-for label in ax.get_yticklabels()[1::4]:
+for label in ax.get_yticklabels()[2::4]:
     label.set_visible(True)    
+
+#exit(0)
 
 for tick in ax.xaxis.get_major_ticks():
     tick.label.set_fontsize(20)
