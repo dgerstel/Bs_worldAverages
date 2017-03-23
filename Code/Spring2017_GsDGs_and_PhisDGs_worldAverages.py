@@ -3,7 +3,7 @@
 ## systematical uncertainties 
 #### Rick van Kooten, Olivier Leroy
 #### Re-writing code in Python: Dawid Gerstel
-## update Spring 2017
+## update Spring
 
 # useful visualisation and numerical tools
 import matplotlib.pyplot as plt
@@ -32,9 +32,10 @@ outputFile = ResDir + "Results_GsDGs_and_PhisDGs_Spring2017.txt"
 
 # Below, I considerd LHCb Psi2S Phi and LHCb J/Psihh as seperate experiments.
 # LHCb Jpsi hh means (PRL114, JpsiPiPi + JpsiKK around the phi mass, 3fb-!1)
-#   combined in LHCb-PAPER-2017-008
+#   combined with DsDs
 
-experiments = ["LHCb_Psi2S_Phi", "LHCb_JPsi_hh", "ATLAS", "CMS", "CDF", "D0"]
+experiments = ["LHCb_JPsi_hh", "LHCb_Psi2S_Phi", "ATLAS", "CMS", "CDF", "D0"]
+
 
 # params to be just read (not computed)
 params = ["Gs", "Gs_estat", "Gs_esyst", "DGs", "DGs_estat", "DGs_esyst", "rho_Gs_DGs_stat", "rho_Gs_DGs_syst"]
@@ -45,61 +46,48 @@ for exp in experiments:
 
 # === INPUT DATA ==============================================================================
 # === LHCb J/Psi hh (PRL114, JpsiPiPi+JpsiKK 3fb-1) data ===
-# + LHCb-PAPER-2017-008 (JpsiKK high mass) + DsDs
-# combination of  LHCb-PAPER-2017-008 and  http://arxiv.org/abs/1409.4619 :
+# + DsDs http://arxiv.org/abs/1409.4619 :
 phisDsDs = 0.02 # http://arxiv.org/abs/1409.4619
 ephisDsDs = sqrt(0.17**2+0.02**2)
-phisJpsihh = 0.0007 # LHCb-PAPER-2017-008
+phisJpsihh = 0.0007 # LHCb-PAPER-2017-008                                       
 ephisJpsihh = 0.0373
+
 
 ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
 phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
-# phisJpsihh_DsDs = 0.00165 pm 0.0364
+# phisJpsihh_DsDs =  -0.0085 pm  0.0380 
+
+val["LHCb_JPsi_hh"]['publi']              = 'LHCb-PAPER-2017-008 preliminary JpsiKK high mass, \nLHCb, Precision Measurement of CP Violation in B0s to JpsiKK; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; \n Phys Rev. Lett. 113, 211801 (2014).'
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
-val["LHCb_JPsi_hh"]['phis_estat']        = 0.
-val["LHCb_JPsi_hh"]['phis_esyst']        = ephisJpsihh_DsDs # from above 4 lines
-val["LHCb_JPsi_hh"]['Gs']                = 0.6588 # from LHCb-PAPER-2017-008
-val["LHCb_JPsi_hh"]['Gs_estat']          = 0.0022
-val["LHCb_JPsi_hh"]['Gs_esyst']          = 0.0015
-val["LHCb_JPsi_hh"]['DGs']               = 0.0813
-val["LHCb_JPsi_hh"]['DGs_estat']         = 0.0073
-val["LHCb_JPsi_hh"]['DGs_esyst']         = 0.0036
+val["LHCb_JPsi_hh"]['phis_estat']        = None
+val["LHCb_JPsi_hh"]['phis_esyst']        = None
+val["LHCb_JPsi_hh"]['phis_etot']         = ephisJpsihh_DsDs # total from above 4 lines
+val["LHCb_JPsi_hh"]['Gs']                = 0.6588 #LHCb-PAPER-2017-008 
+val["LHCb_JPsi_hh"]['Gs_estat']          = 0.0022 # LHCb-PAPER-2017-008 
+val["LHCb_JPsi_hh"]['Gs_esyst']          = 0.0015 # LHCb-PAPER-2017-008 
+val["LHCb_JPsi_hh"]['DGs']               = 0.0813 # LHCb-PAPER-2017-008 
+val["LHCb_JPsi_hh"]['DGs_estat']         = 0.0073 # LHCb-PAPER-2017-008 
+val["LHCb_JPsi_hh"]['DGs_esyst']         = 0.0036 # LHCb-PAPER-2017-008 
 val["LHCb_JPsi_hh"]['rho_Gs_DGs_stat']   = None  # only tot provided below
-val["LHCb_JPsi_hh"]['rho_Gs_DGs_syst']   = None  # only tot provided below
+val["LHCb_JPsi_hh"]['rho_Gs_DGs_syst']   = None # only tot provided below
 val["LHCb_JPsi_hh"]['rho_Gs_DGs_tot']    = -0.13 
 val["LHCb_JPsi_hh"]['rho_phis_DGs_stat'] = None  # only tot provided below
 val["LHCb_JPsi_hh"]['rho_phis_DGs_syst'] = None  # only tot provided below
 val["LHCb_JPsi_hh"]['rho_phis_DGs_tot']  = -0.05  # hard-coded
 
-# === LHCb J/Psi KK above the phi (High Mass), 3fb-1 data ===
-# not needed, included in Jpsihh above, following LHCb-PAPER-2017-008
-# val["LHCb_JPsi_KKHM"]['phis']              = 0.12
-# val["LHCb_JPsi_KKHM"]['phis_estat']        = 0.11
-# val["LHCb_JPsi_KKHM"]['phis_esyst']        = 0.03
-# val["LHCb_JPsi_KKHM"]['Gs']                = 0.650
-# val["LHCb_JPsi_KKHM"]['Gs_estat']          = 0.006
-# val["LHCb_JPsi_KKHM"]['Gs_esyst']          = 0.004
-# val["LHCb_JPsi_KKHM"]['DGs']               = 0.066
-# val["LHCb_JPsi_KKHM"]['DGs_estat']         = 0.018
-# val["LHCb_JPsi_KKHM"]['DGs_esyst']         = 0.010
-# val["LHCb_JPsi_KKHM"]['rho_Gs_DGs_stat']   = None # only tot provided below
-# val["LHCb_JPsi_KKHM"]['rho_Gs_DGs_syst']   = None # only tot provided below
-# val["LHCb_JPsi_KKHM"]['rho_Gs_DGs_tot']    = 0.54
-# val["LHCb_JPsi_KKHM"]['rho_phis_DGs_stat'] = None # only tot provided below
-# val["LHCb_JPsi_KKHM"]['rho_phis_DGs_syst'] = None  # only tot provided below
-# val["LHCb_JPsi_KKHM"]['rho_phis_DGs_tot']  = 0.02  # hard-coded
-
 
 # === LHCb Psi2S Phi data ===
+val["LHCb_Psi2S_Phi"]['publi']              = "LHCb, First study of the CP-violating phase and decay-width difference in B0s to Psi(2S)Phi decays, Physics Letters B762 (2016) 253-262."
+
 val["LHCb_Psi2S_Phi"]['phis']              = 0.23
-val["LHCb_Psi2S_Phi"]['phis_estat']        = 0.285
+val["LHCb_Psi2S_Phi"]['phis_estat']        = sqrt((.28**2+.29**2)/2) # = 0.2850438
 val["LHCb_Psi2S_Phi"]['phis_esyst']        = 0.02
 val["LHCb_Psi2S_Phi"]['Gs']                = .668
 val["LHCb_Psi2S_Phi"]['Gs_estat']          = .011
 val["LHCb_Psi2S_Phi"]['Gs_esyst']          = .006
 val["LHCb_Psi2S_Phi"]['DGs']               = .066
-val["LHCb_Psi2S_Phi"]['DGs_estat']         = .0425
+val["LHCb_Psi2S_Phi"]['DGs_estat']         = sqrt((.41**2+.44**2)/2) # = 0.4252646234
 val["LHCb_Psi2S_Phi"]['DGs_esyst']         = .007  
 val["LHCb_Psi2S_Phi"]['rho_Gs_DGs_stat']   = -.4
 val["LHCb_Psi2S_Phi"]['rho_Gs_DGs_syst']   = 0 # assume no corr...
@@ -109,6 +97,8 @@ val["LHCb_Psi2S_Phi"]['rho_phis_DGs_syst'] = 0 # assume no corr...
 
 # === ATLAS params ===
 # taking this from altas run1 published paper (concerns phis vs DGs)
+val["ATLAS"]['publi']              = "ATLAS, JHEP08(2016)147"
+
 val["ATLAS"]['phis']              = -0.090
 val["ATLAS"]['phis_estat']        = 0.078
 val["ATLAS"]['phis_esyst']        = 0.041
@@ -127,7 +117,8 @@ val["ATLAS"]['rho_phis_DGs_syst'] = 0  # assume no correlation
 # === CMS params ===
 # some computations needed:
 # published Phys.Lett.B 757,97 (2016), 20fb-1 8TeV only
-# Private Email Jack, 15 july 2015, for EPS 20fb-1 8TeV result only (concerns phis vs DGs)
+val["CMS"]['publi']              = "CMS, Phys.Lett.B 757,97 (2016)"
+
 clight = 299.792458
 ctauCMS = 447.2
 ctauCMSestat = 2.9
@@ -149,6 +140,8 @@ val["CMS"]['rho_phis_DGs_syst'] = 0  # assume no correlated systematics between 
 # === CDF params ===
 # Taken from Phys.Rev.Lett 109,171802 (2012), assuming phis Gaussian
 # and centered (phis vs DGs)
+val["CDF"]['publi']             = "CDF, Phys.Rev.Lett 109,171802 (2012), http://journals.aps.org/prl/pdf/10.1103/PhysRevLett.109.171802"
+
 val["CDF"]['phis']             = -0.24
 val["CDF"]['phis_estat']       = None # Only tot provided below
 val["CDF"]['phis_esyst']       = None # Only tot provided below
@@ -167,15 +160,26 @@ val["CDF"]['rho_phis_DGs_tot'] = 0  # hard-coded
 
 # === D0 params ===
 # Taken from Phys Rev D 85, 032006 (2011)
+val["D0"]['publi']             = "D0, Phys Rev D 85, 032006 (2011), https://journals.aps.org/prd/abstract/10.1103/PhysRevD.85.032006"
+
+# symetrize D0 lifetime uncertainties
+tauD0 = 1.443
+tauD0etotp = 0.038
+tauD0etotm = 0.035
+GsD0 = 1/tauD0
+GsD0etotp =tauD0etotm/tauD0**2
+GsD0etotm =tauD0etotp/tauD0**2
+GsD0etot = sqrt( (GsD0etotp**2+GsD0etotm**2)/2.  )
+
 val["D0"]['phis']             = -0.55
 val["D0"]['phis_estat']       = None # Only tot provided below
 val["D0"]['phis_esyst']       = None # Only tot provided below
-val["D0"]['phis_etot']        = 0.37
+val["D0"]['phis_etot']        = sqrt((.36**2+.38**2)/2) # 0.370135
 val["D0"]['Gs']               = 0.6930
-val["D0"]['Gs_estat']         = 0.017529
+val["D0"]['Gs_estat']         = GsD0etot # = 0.01754392
 val["D0"]['Gs_esyst']         = 0.  
 val["D0"]['DGs']              = 0.163
-val["D0"]['DGs_estat']        = 0.0645
+val["D0"]['DGs_estat']        = sqrt((.64**2+.65**2)/2) # 0.645019
 val["D0"]['DGs_esyst']        = 0.0
 val["D0"]['rho_Gs_DGs_stat']  = -0.05
 val["D0"]['rho_Gs_DGs_syst']  = 0 # assume no correlated systematics between Gs and DGs 
@@ -203,6 +207,83 @@ for exp in experiments:
          val[exp]["rho_Gs_DGs_tot"] = rho(exp, "Gs", "DGs")
     if ((val[exp]["rho_phis_DGs_stat"] != None) and (val[exp]["rho_phis_DGs_syst"] != None)):
          val[exp]["rho_phis_DGs_tot"] = rho(exp, "phis", "DGs")
+
+
+
+###########################################################################################
+# ### Input data (flavour-specific and CP-related) and p.d.f.'s
+
+# # (* tauDsDs constraint, only LHCb.  tauDsDs = tauL(1+phis^2 ys/2 )*)
+# tauDsDs1 = 1.37900
+# etauDsDs1 = 0.03106
+# # (* JpsiEta, LHCb ICHEP 2016, CP-even, tauL *)
+# tauJpsiEta1 = 1.479
+# etauJpsiEta1 = 0.03573513677
+# # (*tauJpsif0 constraint,only CDF. tauJpsif0=tauH(1-phis^2 ys/2)*)
+# # (* average of CDF, LHCb JpsiPiPi 1fb-1 and D0 2016 *)
+# tauf01 = 1.65765
+# etauf01 = 0.03188 
+
+# # Flavour specific lifetime, including LakeLouis2017, tauFS (DsMuNu, LHCb)
+# # computed by OS
+# tauFS1 = 1.516
+# etauFS1 = 0.014
+
+phis1 = 0.
+
+tauin = {}
+lifetimeMeas = ["DsDs", "JpsiEta", "Jpsif0", "FS"]
+for lifet in lifetimeMeas:
+    tauin[lifet] = {}
+
+tauin["DsDs"]["publi"]     = "DsDs, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; \n Phys Rev. Lett. 113, 211801 (2014), http://arxiv.org/abs/1409.4619"
+tauin["DsDs"]["tau"]       = 1.37900
+tauin["DsDs"]["tau_etot"]  =  0.03106
+
+tauin["JpsiEta"]["publi"]    = "JpsiEta, LHCb" 
+tauin["JpsiEta"]["tau"]      = 1.479
+tauin["JpsiEta"]["tau_etot"] = 0.03573513677 
+
+tauin["Jpsif0"]["publi"]    = "Jpsif0 from CDF, D0 and LHCb JpsiPiPi 1fb-1"
+tauin["Jpsif0"]["tau"]      = 1.65765
+tauin["Jpsif0"]["tau_etot"] =  0.03188
+
+tauin["FS"]["publi"]      = "tauFS, OS, COMBOS, including D0 DsMuX and LHCb DsMuNu LakeLouise 2017"
+tauin["FS"]["tau"]        = 1.527
+tauin["FS"]["tau_etot"]   = 0.011
+
+
+
+# display inputs
+inputString = ""
+inputString += " ### Inputs ####################################### \n"
+for exp in experiments:
+ inputString += " === Experiment =================================================== \n"
+ inputString += val[exp]["publi"] +"\n"
+ for param in ["Gs", "DGs", "phis"]:
+     if ((val[exp][param + "_estat"] != None) and (val[exp][param + "_esyst"] != None)):
+         inputString += param + " = " + str(val[exp][param]) + "+/-"+  str(val[exp][param+"_estat"])+ \
+                        " (stat) +/-" + str(val[exp][param+"_esyst"]) + " (syst) \n" 
+     else:
+         inputString += param + " = " + str(val[exp][param]) + "+/-" +  str(val[exp][param+"_etot"]) + " (tot) \n" 
+ for param in ["rho_phis_DGs_tot", "rho_Gs_DGs_tot"]:
+     inputString += param + " = " + str(val[exp][param]) + " \n" 
+
+inputString += "  \n"
+
+inputString += " Lifetime inputs \n"
+for  lifet in lifetimeMeas:
+ inputString += " === Experiment =================================================== \n"
+ inputString += tauin[lifet]["publi"] +"\n"
+ inputString += "tau = " + str(tauin[lifet]["tau"]) + "+/-" + str(tauin[lifet]["tau_etot"])+ " (tot) \n"
+
+inputString += "  \n"
+inputString += " ### Fit results ####################################### \n"
+
+print inputString
+with open(outputFile, "w") as f:
+    print >>f, inputString
+#------------------------------------------------------------------------------------------
 
 
 # ### p.d.f.'s for the experiments
@@ -284,7 +365,7 @@ class Maxlikelihood(object):
 
 
 class Minimiser(object):
-    def __init__(self, fun_obj, fitParams, fname, fmode='w', header="", parnames=('x','y')):
+    def __init__(self, fun_obj, fitParams, fname, fmode='a', header="", parnames=('x','y')):
         self.minimise(fun_obj, fitParams)
         self.printall(fname, fmode, header, parnames)
 
@@ -335,12 +416,17 @@ class Minimiser(object):
                 print >>f, parnames[0], "=", x, "^{+", explus, "}_{", exminus, "}"
                 print >>f, parnames[1], "=", y, "^{+", eyplus, "}_{", eyminus, "}"
                 print >>f, "rho(", parnames[0], ", ", parnames[1], ") = ", rho
+
+
                 
+###########################################################################################
+
+
 # starting values for the Phis, DGs parameters
 fitParams = dict(x=-0.3, y=0.085, error_x=0.0325, error_y=0.0065, limit_x=None, limit_y=None, errordef=1)
 parnames = ('phis', 'DGs')
 func = Maxlikelihood(par=parnames, exps=experiments)
-m = Minimiser(func, fitParams, fname=outputFile, header="Result from the global fit:", parnames=parnames)
+m = Minimiser(func, fitParams, fname=outputFile, header="Result from DGs - phi_s  fit:", parnames=parnames)
 ###########################################################################################
 # ### Contour plots
 
@@ -358,6 +444,13 @@ coords = [(0.42, 0.1), (0.63, 0.8), (0.73, 0.6), (0.98, 0.2), (0.6, 0.45), (0.65
 colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
 
 fig, ax = plt.subplots(1, figsize=(12,8))
+
+         
+
+
+ 
+#for i in range(len(channels)):
+#  print "test", [exper for exper in channels[i]]
 
 # Draw contours
 for i in range(len(channels)):
@@ -467,23 +560,7 @@ saveplt(plt, name='Phis_vs_DGs')
 #############################################################################################
 # # Analysis of $\Delta \Gamma_{s}$ and $\Gamma_{s}$
 
-# ### Input data (flavour-specific and CP-related) and p.d.f.'s
-# (* tauDsDs constraint, only LHCb.  tauDsDs = tauL(1+phis^2 ys/2 )*)
-tauDsDs1 = 1.37900
-etauDsDs1 = 0.03106
-# (* JpsiEta, LHCb ICHEP 2016, CP-even, tauL *)
-tauJpsiEta1 = 1.479
-etauJpsiEta1 = 0.03573513677
-# (*tauJpsif0 constraint,only CDF. tauJpsif0=tauH(1-phis^2 ys/2)*)
-# (* average of CDF, LHCb JpsiPiPi 1fb-1 and D0 2016 *)
-tauf01 = 1.65765
-etauf01 = 0.03188 
 
-# Flavour specific lifetime, including LakeLouis2017, tauFS (DsMuNu, LHCb)
-# computed by OS
-tauFS1 = 1.527
-etauFS1 = 0.011
-phis1 = 0.
 
 def CP(x, y, tauCP, etauCP, phis, eta):
     """Generic joint pdf of Gs and DGs for CP-eigenstate channels (Bs2KK ??)"""
@@ -491,12 +568,12 @@ def CP(x, y, tauCP, etauCP, phis, eta):
                (1 + eta * phis ** 2 * y / (4 * x)) - tauCP) / etauCP) ** 2) 
 
 def CP_even(x, y):
-    return CP(x, y, tauDsDs1, etauDsDs1, phis1, eta=1) * CP(x, y, tauJpsiEta1, etauJpsiEta1, phis1, eta=1)
+    return CP(x, y, tauin["DsDs"]["tau"], tauin["DsDs"]["tau_etot"], phis1, eta=1) * CP(x, y, tauin["JpsiEta"]["tau"], tauin["JpsiEta"]["tau_etot"], phis1, eta=1)
 
 def CP_odd(x, y):
-    return CP(x, y, tauf01, etauf01, phis1, eta=-1)
+    return CP(x, y, tauin["Jpsif0"]["tau"], tauin["Jpsif0"]["tau_etot"], phis1, eta=-1)
 
-def flavour_specific(x, y, tauFS=tauFS1, etauFS=etauFS1):
+def flavour_specific(x, y, tauFS=tauin["FS"]["tau"], etauFS=tauin["FS"]["tau_etot"]):
     """Joint pdf of Gs and DGs for flavour-specific lifetime tauFS"""
     return 1 / (np.sqrt(2 * np.pi) * etauFS) * np.exp(-1. / 2 * ((1. / x * (1 + (y / (2 * x)) ** 2) / (1 - (y / (2 * x)) ** 2) - tauFS) / etauFS) ** 2)
     
@@ -510,7 +587,7 @@ def hadronic_and_lifetimes(x, y):
     
 def totpdf_Gs_DGs(x, y):
     """Total pdf, including JpsiKK, JpsiPipi, CP and flavour specific lifetimes"""
-    return hadronic_and_lifetimes(x, y) * flavour_specific(x, y, tauFS1, etauFS1)
+    return hadronic_and_lifetimes(x, y) * flavour_specific(x, y, tauin["FS"]["tau"], tauin["FS"]["tau"])
 
 # Change of variable to tau
 def CP_tau(x, y, tauCP, etauCP, phis, eta):
@@ -520,12 +597,12 @@ def CP_tau(x, y, tauCP, etauCP, phis, eta):
     return 1. / (np.sqrt(2 * np.pi) * etauCP) * np.exp( -1./2 * ( (-y*eta - tauCP)/etauCP )**2 )
 
 def CP_even_tau(x,y):
-    return CP_tau(x, y, tauDsDs1, etauDsDs1, phis1, eta=1) * CP_tau(x, y, tauJpsiEta1, etauJpsiEta1, phis1, eta=1)
+    return CP_tau(x, y, tauin["DsDs"]["tau"], tauin["DsDs"]["tau_etot"], phis1, eta=1) * CP_tau(x, y, tauin["JpsiEta"]["tau"], tauin["JpsiEta"]["tau_etot"], phis1, eta=1)
 
 def CP_odd_tau(x,y):
-    return CP_tau(x, y, tauf01, etauf01, phis1, -1)
+    return CP_tau(x, y, tauin["Jpsif0"]["tau"], tauin["Jpsif0"]["tau_etot"], phis1, -1)
 
-def flavour_specific_tau(x, y, tauFS=tauFS1, etauFS=etauFS1):
+def flavour_specific_tau(x, y, tauFS=tauin["FS"]["tau"], etauFS=tauin["FS"]["tau_etot"]):
     """Joint pdf of Gs and DGs for flavour-specific lifetime tauFS"""
     return 1 / (np.sqrt(2 * np.pi) * etauFS) * np.exp(-1. / 2 * ( ((x**2 + y**2)/(x+y) - tauFS )/etauFS)** 2)
 
