@@ -174,11 +174,11 @@ val["D0"]['phis']             = -0.55
 val["D0"]['phis_estat']       = None # Only tot provided below
 val["D0"]['phis_esyst']       = None # Only tot provided below
 val["D0"]['phis_etot']        = sqrt((.36**2+.38**2)/2) # 0.370135
-val["D0"]['Gs']               = 0.6930
+val["D0"]['Gs']               = GsD0
 val["D0"]['Gs_estat']         = GsD0etot # = 0.01754392
 val["D0"]['Gs_esyst']         = 0.  
 val["D0"]['DGs']              = 0.163
-val["D0"]['DGs_estat']        = sqrt((.64**2+.65**2)/2) # 0.645019
+val["D0"]['DGs_estat']        = sqrt((.064**2+.065**2)/2) # 0.645019
 val["D0"]['DGs_esyst']        = 0.0
 val["D0"]['rho_Gs_DGs_stat']  = -0.05
 val["D0"]['rho_Gs_DGs_syst']  = 0 # assume no correlated systematics between Gs and DGs 
