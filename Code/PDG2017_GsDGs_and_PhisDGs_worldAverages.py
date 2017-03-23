@@ -54,9 +54,9 @@ ephisJpsihh = 0.039
 
 ephisJpsihh_DsDs = sqrt(1/(1/ephisDsDs**2+1/ephisJpsihh**2))
 phisJpsihh_DsDs = ephisJpsihh_DsDs**2*(phisDsDs/ephisDsDs**2+phisJpsihh/ephisJpsihh**2)
-# phisJpsihh_DsDs =  -0.009 pm  0.0380 
+# phisJpsihh_DsDs =  -0.0085 pm  0.0380 
 
-val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiPi; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; \n Phys Rev. Lett. 113, 211801 (2014).'
+val["LHCb_JPsi_hh"]['publi']              = 'LHCb, Precision Measurement of CP Violation in B0s to JpsiKK; PRL 114, 041801 (2015)., \nLHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; \n Phys Rev. Lett. 113, 211801 (2014).'
 
 val["LHCb_JPsi_hh"]['phis']              = phisJpsihh_DsDs # from above 4 lines
 val["LHCb_JPsi_hh"]['phis_estat']        = None
@@ -80,13 +80,13 @@ val["LHCb_JPsi_hh"]['rho_phis_DGs_tot']  = 0.0  # hard-coded
 val["LHCb_Psi2S_Phi"]['publi']              = "LHCb, First study of the CP-violating phase and decay-width difference in B0s to Psi(2S)Phi decays, Physics Letters B762 (2016) 253-262."
 
 val["LHCb_Psi2S_Phi"]['phis']              = 0.23
-val["LHCb_Psi2S_Phi"]['phis_estat']        = 0.285
+val["LHCb_Psi2S_Phi"]['phis_estat']        = sqrt((.28**2+.29**2)/2) # = 0.2850438
 val["LHCb_Psi2S_Phi"]['phis_esyst']        = 0.02
 val["LHCb_Psi2S_Phi"]['Gs']                = .668
 val["LHCb_Psi2S_Phi"]['Gs_estat']          = .011
-val["LHCb_Psi2S_Phi"]['Gs_esyst']          = .007
+val["LHCb_Psi2S_Phi"]['Gs_esyst']          = .006
 val["LHCb_Psi2S_Phi"]['DGs']               = .066
-val["LHCb_Psi2S_Phi"]['DGs_estat']         = .0425
+val["LHCb_Psi2S_Phi"]['DGs_estat']         = sqrt((.41**2+.44**2)/2) # = 0.4252646234
 val["LHCb_Psi2S_Phi"]['DGs_esyst']         = .007  
 val["LHCb_Psi2S_Phi"]['rho_Gs_DGs_stat']   = -.4
 val["LHCb_Psi2S_Phi"]['rho_Gs_DGs_syst']   = 0 # assume no corr...
@@ -139,7 +139,7 @@ val["CMS"]['rho_phis_DGs_syst'] = 0  # assume no correlated systematics between 
 # === CDF params ===
 # Taken from Phys.Rev.Lett 109,171802 (2012), assuming phis Gaussian
 # and centered (phis vs DGs)
-val["CDF"]['publi']             = "CDF, Phys.Rev.Lett 109,171802 (2012)"
+val["CDF"]['publi']             = "CDF, Phys.Rev.Lett 109,171802 (2012), http://journals.aps.org/prl/pdf/10.1103/PhysRevLett.109.171802"
 
 val["CDF"]['phis']             = -0.24
 val["CDF"]['phis_estat']       = None # Only tot provided below
@@ -159,17 +159,26 @@ val["CDF"]['rho_phis_DGs_tot'] = 0  # hard-coded
 
 # === D0 params ===
 # Taken from Phys Rev D 85, 032006 (2011)
-val["D0"]['publi']             = "D0, Phys Rev D 85, 032006 (2011)"
+val["D0"]['publi']             = "D0, Phys Rev D 85, 032006 (2011), https://journals.aps.org/prd/abstract/10.1103/PhysRevD.85.032006"
+
+# symetrize D0 lifetime uncertainties
+tauD0 = 1.443
+tauD0etotp = 0.038
+tauD0etotm = 0.035
+GsD0 = 1/tauD0
+GsD0etotp =tauD0etotm/tauD0**2
+GsD0etotm =tauD0etotp/tauD0**2
+GsD0etot = sqrt( (GsD0etotp**2+GsD0etotm**2)/2.  )
 
 val["D0"]['phis']             = -0.55
 val["D0"]['phis_estat']       = None # Only tot provided below
 val["D0"]['phis_esyst']       = None # Only tot provided below
-val["D0"]['phis_etot']        = 0.37
+val["D0"]['phis_etot']        = sqrt((.36**2+.38**2)/2) # 0.370135
 val["D0"]['Gs']               = 0.6930
-val["D0"]['Gs_estat']         = 0.017529
+val["D0"]['Gs_estat']         = GsD0etot # = 0.01754392
 val["D0"]['Gs_esyst']         = 0.  
 val["D0"]['DGs']              = 0.163
-val["D0"]['DGs_estat']        = 0.0645
+val["D0"]['DGs_estat']        = sqrt((.64**2+.65**2)/2) # 0.645019
 val["D0"]['DGs_esyst']        = 0.0
 val["D0"]['rho_Gs_DGs_stat']  = -0.05
 val["D0"]['rho_Gs_DGs_syst']  = 0 # assume no correlated systematics between Gs and DGs 
