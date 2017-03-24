@@ -253,6 +253,7 @@ tauin["FS"]["tau_etot"]   = 0.014
 
 
 
+
 # display inputs
 inputString = ""
 inputString += " ### Inputs ####################################### \n"
@@ -586,7 +587,7 @@ def hadronic_and_lifetimes(x, y):
     
 def totpdf_Gs_DGs(x, y):
     """Total pdf, including JpsiKK, JpsiPipi, CP and flavour specific lifetimes"""
-    return hadronic_and_lifetimes(x, y) * flavour_specific(x, y, tauin["FS"]["tau"], tauin["FS"]["tau"])
+    return hadronic_and_lifetimes(x, y) * flavour_specific(x, y, tauin["FS"]["tau"], tauin["FS"]["tau_etot"])
 
 # Change of variable to tau
 def CP_tau(x, y, tauCP, etauCP, phis, eta):
