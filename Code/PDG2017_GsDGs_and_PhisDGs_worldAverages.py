@@ -15,12 +15,20 @@ import matplotlib
 from iminuit import Minuit, describe, Struct, util
 import warnings
 
+# Choose confif
+thisVersion = "PDG"
+thisYear = "2017"
+#thisVersion = "Summer"
+#thisYear = "2016"
+thisLogo = thisVersion+" "+thisYear
+
+
 # LaTeX font for matplotlib
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 
 # Directory of all results (pictures and txt)
 ResDir = "../Results/"
-outputFile = ResDir + "Results_GsDGs_and_PhisDGs_PDG2017.txt"
+outputFile = ResDir + "Results_GsDGs_and_PhisDGs_"+thisVersion+thisYear+".txt"
 
 # # Inputs
 # 
@@ -542,7 +550,7 @@ def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
     plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFAG", verticalalignment='center', horizontalalignment='center',
         color='w', fontsize=18, fontstyle='italic', fontweight='light')
     # (4) edition (=season+year) text
-    plt.text(x+.5*dx, y+ddy+0.5*height_w, "PDG 2017", verticalalignment='center', horizontalalignment='center',
+    plt.text(x+.5*dx, y+ddy+0.5*height_w, thisLogo, verticalalignment='center', horizontalalignment='center',
         color='k', fontsize=11, fontstyle='italic', fontweight='light')
 
 drawHFAGlogo(leftBottom=(0.3, 0.135), plotWidth=(phismax-phismin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
