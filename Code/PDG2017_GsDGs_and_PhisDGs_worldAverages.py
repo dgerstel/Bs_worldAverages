@@ -448,8 +448,10 @@ X, Y = np.meshgrid(X, Y)
 lhcb_channels = experiments[0:2]
 channels = [["ATLAS"], ["D0"], ["CMS"], ["CDF"], experiments, lhcb_channels]
 labels = [r"ATLAS 19.2 fb$^{-1}$", r"D0 8 fb$^{-1}$", r"CMS 19.7 fb$^{-1}$", r"CDF 9.6 fb$^{-1}$", "Combined", r"LHCb 3 fb$^{-1}$"]
-coords = [(0.42, 0.1), (0.63, 0.8), (0.73, 0.6), (0.98, 0.2), (0.6, 0.45), (0.65, 0.1)]
+coords = [(0.47, 0.08), (0.68, 0.85), (0.82, 0.58), (0.94, 0.42), (0.55, 0.45), (0.78, 0.20)]
 colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
+#colors = ['brown', 'lightblue', 'r', 'orange', 'white', 'g']
+
 
 fig, ax = plt.subplots(1, figsize=(12,8))
 
@@ -489,7 +491,7 @@ rect = rectangle(phis_SM, phis_SM_err_down, phis_SM_err_up, DGs_SM, DGs_SM_err_d
 
 # Add the rectangle to the axes
 ax.add_patch(rect)
-plt.text(0.515, 0.5, "SM", verticalalignment='bottom', horizontalalignment='right',
+plt.text(0.5, 0.34, "SM", verticalalignment='bottom', horizontalalignment='right',
     transform=ax.transAxes, color='k', fontsize=15)
 
 
@@ -547,7 +549,7 @@ def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
     ax.add_patch(blr)
     ax.add_patch(whr)
     # (3) HFAG text
-    plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFAG", verticalalignment='center', horizontalalignment='center',
+    plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFlAv", verticalalignment='center', horizontalalignment='center',
         color='w', fontsize=18, fontstyle='italic', fontweight='light')
     # (4) edition (=season+year) text
     plt.text(x+.5*dx, y+ddy+0.5*height_w, thisLogo, verticalalignment='center', horizontalalignment='center',
@@ -678,18 +680,38 @@ X, Y = np.meshgrid(X, Y)
 
 # lists of colours, labels, experiment channels, coordinates of labels
 channels = [experiments]
-labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
-          r"$\tau (B^{0}_{s} \rightarrow J/\psi \pi \pi,$"+"\n"+r"$J/\psi f_0)$",
-          r"$\tau(B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific)$ ", 
+labels = [r"$B^{0}_{s} \rightarrow D_{s} D_{s}, J/\psi \eta$",
+          r"$B^{0}_{s} \rightarrow J/\psi \pi \pi, J/\psi f_0$",
+          r"$B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific$ ", 
           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
+# labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
+#           r"$\tau (B^{0}_{s} \rightarrow J/\psi \pi \pi,$"+"\n"+r"$J/\psi f_0)$",
+#           r"$\tau(B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific)$ ", 
+#           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
 
-coords = [(0.8, 0.05), (0.75, 0.5), (0.675, 0.2), (0.45, 0.25), (0.40, 0.36)]
-colors = ['magenta', 'green', 'blue', 'red', 'Black']
+
+
+coords = [(0.98, 0.1), (0.95, 0.54), (0.677, 0.20), (0.45, 0.25), (0.40, 0.36)]
+colors = ['magenta', 'green', 'blue', 'red', 'White']
 
 # all p.d.f.'s to be displayed
 pdfs = [CP_even, CP_odd, flavour_specific, Maxlikelihood(par=('Gs', 'DGs'), exps=experiments, pdf=None, log=False), totpdf_Gs_DGs]
 
 fig, ax = plt.subplots(1, figsize=(10,9))
+
+## SM prediction
+dGs_SM, dGs_err_SM = 0.088, 0.020  # ps^-1
+left_bottom = (Gsmin, dGs_SM - dGs_err_SM)
+width = Gsmax - Gsmin
+height = 2 * dGs_err_SM
+cosmetics = {'linewidth':1, 'edgecolor':'none', 'facecolor':'khaki',
+             'alpha':0.65}
+rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
+
+# Add the rectangle to the axes
+ax.add_patch(rec)
+plt.text(0.9, 0.32, s="Theory", verticalalignment='bottom', horizontalalignment='right',
+    transform=ax.transAxes, color='k', fontsize=25)
 
 # Draw contours
 for i in range(len(pdfs)):
@@ -700,7 +722,13 @@ for i in range(len(pdfs)):
     dlnL = lnL - np.min(lnL)
     # contour 1 <-> 39% confidence interval on 2 delta log likelihood
     # filled in contours and then edge contours (for pretty display)
-    plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.2, colors=colors[i])
+
+
+    if (i == 3):
+        plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.95, colors=colors[i])
+    else:
+        plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.2, colors=colors[i])
+
     cntr = plt.contour(X, Y, dlnL, levels=[0, 1.], alpha=1, colors=colors[i], linewidths=2)
 
      # Save contours from all experiments without (with) flavours for the last plot (lifetimes)
@@ -710,24 +738,11 @@ for i in range(len(pdfs)):
         cntr_all_chann_and_flavour = cntr
         
     if (i == 2):  # flavour-specific -> label at an angle
-	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', horizontalalignment='center', color=colors[i], fontsize=18, rotation=59)
+	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', horizontalalignment='center', color=colors[i], fontsize=25, rotation=59)
     else:
 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=25)
 
 
-## SM prediction
-dGs_SM, dGs_err_SM = 0.088, 0.020  # ps^-1
-left_bottom = (Gsmin, dGs_SM - dGs_err_SM)
-width = Gsmax - Gsmin
-height = 2 * dGs_err_SM
-cosmetics = {'linewidth':1, 'edgecolor':'none', 'facecolor':'khaki',
-             'alpha':0.75}
-rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
-
-# Add the rectangle to the axes
-ax.add_patch(rec)
-plt.text(0.9, 0.32, s="Theory", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=25)
 
 # Add plot description
 #plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
@@ -769,7 +784,7 @@ ax.xaxis.set_label_coords(0.93, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.87)
 
 # Draw HFAG logo
-drawHFAGlogo(leftBottom=(0.63,0.2), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(0.625,0.215), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 saveplt(plt, name='Gs_vs_DGs')
 
 
@@ -779,7 +794,8 @@ saveplt(plt, name='Gs_vs_DGs')
 
 
 # lists of colours, labels, experiment channels, coordinates of labels
-coords = [(0.4, 0.82), (0.95, 0.6), (1.56, 1.54), (0.45, 0.3), (0.4, 0.42)]
+#colors = ['magenta', 'green',         'blue',     'red',        'White']
+coords = [(0.353, 0.82), (0.95, 0.6), (1.54, 1.54), (0.45, 0.3), (0.48, 0.45)]
 
 # all p.d.f.'s to be displayed (-2 log computed for all except one already with -2 log)
 pdfs = [CP_even_tau, CP_odd_tau, flavour_specific_tau]
@@ -826,8 +842,9 @@ taul_ach, tauh_ach = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann)
 taul_achf, tauh_achf = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann_and_flavour))
 
 # Fill contour for all experiments without (with) flavours
-plt.plot(taul_ach, tauh_ach, color=colors[3])
+plt.fill(taul_ach, tauh_ach, color=colors[3], alpha = 0.65)
 plt.plot(taul_achf, tauh_achf, color=colors[4])
+
 
 # Add plot description
 #plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
@@ -864,5 +881,5 @@ ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
 ax.xaxis.set_label_coords(0.9, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.9)
 
-drawHFAGlogo(leftBottom=(1.50, 1.775), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(1.57, 1.79), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
 saveplt(plt, 'tauL_vs_tauH')
