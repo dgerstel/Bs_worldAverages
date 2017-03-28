@@ -16,10 +16,10 @@ from iminuit import Minuit, describe, Struct, util
 import warnings
 
 # Choose confif
-thisVersion = "PDG"
-thisYear = "2017"
-#thisVersion = "Summer"
-#thisYear = "2016"
+#thisVersion = "PDG"
+#thisYear = "2017"
+thisVersion = "Summer"
+thisYear = "2016"
 thisLogo = thisVersion+" "+thisYear
 
 

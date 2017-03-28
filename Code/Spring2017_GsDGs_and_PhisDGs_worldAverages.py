@@ -663,6 +663,7 @@ m = Minimiser(func, fitParams, fname=outputFile, fmode='a',
               header="DEFAULT fit using Jpsihh, effective lifetimes and tauFS:", parnames=parnames)
 print_tau_fit(m, outputFile)
 
+
 ##############################################################################################
 # ### Contour plots
 
@@ -675,18 +676,38 @@ X, Y = np.meshgrid(X, Y)
 
 # lists of colours, labels, experiment channels, coordinates of labels
 channels = [experiments]
-labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
-          r"$\tau (B^{0}_{s} \rightarrow J/\psi \pi \pi,$"+"\n"+r"$J/\psi f_0)$",
-          r"$\tau(B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific)$ ", 
+labels = [r"$B^{0}_{s} \rightarrow D_{s} D_{s}, J/\psi \eta$",
+          r"$B^{0}_{s} \rightarrow J/\psi \pi \pi, J/\psi f_0$",
+          r"$B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific$ ", 
           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
+# labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
+#           r"$\tau (B^{0}_{s} \rightarrow J/\psi \pi \pi,$"+"\n"+r"$J/\psi f_0)$",
+#           r"$\tau(B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific)$ ", 
+#           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
 
-coords = [(0.8, 0.05), (0.75, 0.5), (0.675, 0.2), (0.45, 0.25), (0.40, 0.36)]
-colors = ['magenta', 'green', 'blue', 'red', 'Black']
+
+
+coords = [(0.98, 0.1), (0.95, 0.54), (0.675, 0.20), (0.45, 0.25), (0.40, 0.36)]
+colors = ['magenta', 'green',       'blue', 'red', 'White']
 
 # all p.d.f.'s to be displayed
 pdfs = [CP_even, CP_odd, flavour_specific, Maxlikelihood(par=('Gs', 'DGs'), exps=experiments, pdf=None, log=False), totpdf_Gs_DGs]
 
 fig, ax = plt.subplots(1, figsize=(10,9))
+
+## SM prediction
+dGs_SM, dGs_err_SM = 0.088, 0.020  # ps^-1
+left_bottom = (Gsmin, dGs_SM - dGs_err_SM)
+width = Gsmax - Gsmin
+height = 2 * dGs_err_SM
+cosmetics = {'linewidth':1, 'edgecolor':'none', 'facecolor':'khaki',
+             'alpha':0.65}
+rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
+
+# Add the rectangle to the axes
+ax.add_patch(rec)
+plt.text(0.9, 0.32, s="Theory", verticalalignment='bottom', horizontalalignment='right',
+    transform=ax.transAxes, color='k', fontsize=25)
 
 # Draw contours
 for i in range(len(pdfs)):
@@ -697,7 +718,13 @@ for i in range(len(pdfs)):
     dlnL = lnL - np.min(lnL)
     # contour 1 <-> 39% confidence interval on 2 delta log likelihood
     # filled in contours and then edge contours (for pretty display)
-    plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.2, colors=colors[i])
+
+
+    if (i == 3):
+        plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.95, colors=colors[i])
+    else:
+        plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.2, colors=colors[i])
+
     cntr = plt.contour(X, Y, dlnL, levels=[0, 1.], alpha=1, colors=colors[i], linewidths=2)
 
      # Save contours from all experiments without (with) flavours for the last plot (lifetimes)
@@ -707,24 +734,11 @@ for i in range(len(pdfs)):
         cntr_all_chann_and_flavour = cntr
         
     if (i == 2):  # flavour-specific -> label at an angle
-	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', horizontalalignment='center', color=colors[i], fontsize=18, rotation=59)
+	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', horizontalalignment='center', color=colors[i], fontsize=25, rotation=59)
     else:
 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=25)
 
 
-## SM prediction
-dGs_SM, dGs_err_SM = 0.088, 0.020  # ps^-1
-left_bottom = (Gsmin, dGs_SM - dGs_err_SM)
-width = Gsmax - Gsmin
-height = 2 * dGs_err_SM
-cosmetics = {'linewidth':1, 'edgecolor':'none', 'facecolor':'khaki',
-             'alpha':0.75}
-rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
-
-# Add the rectangle to the axes
-ax.add_patch(rec)
-plt.text(0.9, 0.32, s="Theory", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=25)
 
 # Add plot description
 #plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
@@ -766,7 +780,7 @@ ax.xaxis.set_label_coords(0.93, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.87)
 
 # Draw HFAG logo
-drawHFAGlogo(leftBottom=(0.63,0.2), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(0.625,0.215), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 saveplt(plt, name='Gs_vs_DGs')
 
 
@@ -776,7 +790,8 @@ saveplt(plt, name='Gs_vs_DGs')
 
 
 # lists of colours, labels, experiment channels, coordinates of labels
-coords = [(0.4, 0.82), (0.95, 0.6), (1.56, 1.54), (0.45, 0.3), (0.4, 0.42)]
+#colors = ['magenta', 'green',         'blue',     'red',        'White']
+coords = [(0.353, 0.82), (0.95, 0.6), (1.555, 1.54), (0.45, 0.3), (0.48, 0.45)]
 
 # all p.d.f.'s to be displayed (-2 log computed for all except one already with -2 log)
 pdfs = [CP_even_tau, CP_odd_tau, flavour_specific_tau]
@@ -804,7 +819,7 @@ for i in range(len(coords)):
 
     if (i == 2):  # flavour-specific -- draw at an angle
 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', 
-             horizontalalignment='center', color=colors[i], fontsize=25, rotation=-45)
+                     horizontalalignment='center', color=colors[i], fontsize=25, rotation=-42)
     else:
 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', 
              horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=25)
@@ -823,8 +838,9 @@ taul_ach, tauh_ach = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann)
 taul_achf, tauh_achf = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann_and_flavour))
 
 # Fill contour for all experiments without (with) flavours
-plt.plot(taul_ach, tauh_ach, color=colors[3])
+plt.fill(taul_ach, tauh_ach, color=colors[3], alpha = 0.65)
 plt.plot(taul_achf, tauh_achf, color=colors[4])
+
 
 # Add plot description
 #plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
@@ -861,5 +877,207 @@ ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
 ax.xaxis.set_label_coords(0.9, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.9)
 
-drawHFAGlogo(leftBottom=(1.50, 1.775), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(1.57, 1.79), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
 saveplt(plt, 'tauL_vs_tauH')
+
+
+# ##############################################################################################
+# # ### Contour plots
+
+
+# # grid
+# Gsmin, Gsmax, DGsmin, DGsmax = (0.62, 0.75, 0, 0.255) # DGsmax a bit more
+# X = np.linspace(Gsmin, Gsmax, 1000)
+# Y = np.linspace(DGsmin, DGsmax, 1000)
+# X, Y = np.meshgrid(X, Y)
+
+# # lists of colours, labels, experiment channels, coordinates of labels
+# channels = [experiments]
+# labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
+#           r"$\tau (B^{0}_{s} \rightarrow J/\psi \pi \pi,$"+"\n"+r"$J/\psi f_0)$",
+#           r"$\tau(B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific)$ ", 
+#           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
+
+# coords = [(0.8, 0.05), (0.75, 0.5), (0.675, 0.2), (0.45, 0.25), (0.40, 0.36)]
+# colors = ['magenta', 'green', 'blue', 'red', 'Black']
+
+# # all p.d.f.'s to be displayed
+# pdfs = [CP_even, CP_odd, flavour_specific, Maxlikelihood(par=('Gs', 'DGs'), exps=experiments, pdf=None, log=False), totpdf_Gs_DGs]
+
+# fig, ax = plt.subplots(1, figsize=(10,9))
+
+# # Draw contours
+# for i in range(len(pdfs)):
+#     # zero division error, but does not matter for minimisation
+#     with warnings.catch_warnings():
+#             warnings.simplefilter("ignore")
+# 	    lnL = -2 * np.log(pdfs[i](X, Y))
+#     dlnL = lnL - np.min(lnL)
+#     # contour 1 <-> 39% confidence interval on 2 delta log likelihood
+#     # filled in contours and then edge contours (for pretty display)
+#     plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.2, colors=colors[i])
+#     cntr = plt.contour(X, Y, dlnL, levels=[0, 1.], alpha=1, colors=colors[i], linewidths=2)
+
+#      # Save contours from all experiments without (with) flavours for the last plot (lifetimes)
+#     if (i == 3):
+#         cntr_all_chann = cntr
+#     if (i == 4):
+#         cntr_all_chann_and_flavour = cntr
+        
+#     if (i == 2):  # flavour-specific -> label at an angle
+# 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', horizontalalignment='center', color=colors[i], fontsize=18, rotation=59)
+#     else:
+# 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=25)
+
+
+# ## SM prediction
+# dGs_SM, dGs_err_SM = 0.088, 0.020  # ps^-1
+# left_bottom = (Gsmin, dGs_SM - dGs_err_SM)
+# width = Gsmax - Gsmin
+# height = 2 * dGs_err_SM
+# cosmetics = {'linewidth':1, 'edgecolor':'none', 'facecolor':'khaki',
+#              'alpha':0.75}
+# rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
+
+# # Add the rectangle to the axes
+# ax.add_patch(rec)
+# plt.text(0.9, 0.32, s="Theory", verticalalignment='bottom', horizontalalignment='right',
+#     transform=ax.transAxes, color='k', fontsize=25)
+
+# # Add plot description
+# #plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
+#     #transform=ax.transAxes, color='k', fontsize=16)
+# #plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 0.5)", verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color='k', fontsize=18)
+
+# # Display ranges and axes ticks; axes titles
+# plt.axis([Gsmin, Gsmax, DGsmin, DGsmax])
+# plt.xticks(np.arange(Gsmin, Gsmax, .005))
+# plt.yticks(np.arange(DGsmin, DGsmax, .01))
+
+# plt.title(r"Contours of $\Delta$(log $\mathcal{L}$) = 0.5", fontsize=25)
+
+# #hide_half_labels(ax)
+
+# # Axes settings and labels    
+# ax.set_autoscale_on(False)
+# plt.xlabel(r'$\Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
+# plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
+# # hide some labels
+# for label in ax.get_xticklabels():
+#     label.set_visible(False)
+# for label in ax.get_yticklabels():
+#     label.set_visible(False)
+# for label in ax.get_xticklabels()[0::8]:
+#     label.set_visible(True)
+# for label in ax.get_yticklabels()[0::5]:
+#     label.set_visible(True)    
+
+# for tick in ax.xaxis.get_major_ticks():
+#     tick.label.set_fontsize(20)
+# for tick in ax.yaxis.get_major_ticks():
+#     tick.label.set_fontsize(20)
+
+# ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+# ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.2f'))
+
+# ax.xaxis.set_label_coords(0.93, -0.07)
+# ax.yaxis.set_label_coords(-0.09, 0.87)
+
+# # Draw HFAG logo
+# drawHFAGlogo(leftBottom=(0.63,0.2), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+# saveplt(plt, name='Gs_vs_DGs')
+
+
+# ##################################################################################################
+# # ### Analysis in terms of lifetimes
+# ##################################################################################################
+
+
+# # lists of colours, labels, experiment channels, coordinates of labels
+# coords = [(0.4, 0.82), (0.95, 0.6), (1.56, 1.54), (0.45, 0.3), (0.4, 0.42)]
+
+# # all p.d.f.'s to be displayed (-2 log computed for all except one already with -2 log)
+# pdfs = [CP_even_tau, CP_odd_tau, flavour_specific_tau]
+
+# fig, ax = plt.subplots(1, figsize=(10,9))
+
+# ## tau grid for computing and plotting
+# tauLmin, tauLmax, tauHmin, tauHmax = (1.24, 1.66, 1.44, 1.86)
+# tau_L, tau_H = np.linspace(tauLmin, tauLmax, 1000), np.linspace(tauHmin, tauHmax, 1000)
+# tau_L, tau_H = np.meshgrid(tau_L, tau_H)
+
+# # Draw contours
+# for i in range(len(coords)):
+#     if (i < 3):
+#         # compute delta log-likelihood
+#         lnL = -2 * np.log(pdfs[i](tau_L, tau_H))
+#         dlnL = lnL - lnL.min()
+
+#         cs = plt.contourf(tau_L, tau_H, dlnL, levels=[0, 1.], alpha=0.2, colors=colors[i])
+#         # skip contour edges for rectangular bands
+#         if (i != 0 and i != 1):
+#             plt.contour(tau_L, tau_H, dlnL, levels=[0, 1.], alpha=0.8, colors=colors[i], linewidths=1)
+# 	else:
+# 	    plt.contour(tau_L, tau_H, dlnL, levels=[1.], alpha=0.8, colors=colors[i], linewidths=1)
+
+#     if (i == 2):  # flavour-specific -- draw at an angle
+# 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='center', 
+#              horizontalalignment='center', color=colors[i], fontsize=25, rotation=-45)
+#     else:
+# 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', 
+#              horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=25)
+
+# def extract_pyplot_contour(cs, which=1):
+#     #for level in range(len(cs)):
+#     p = cs.collections[which].get_paths()[0]
+#     v = p.vertices
+#     xx = v[:,0]
+#     yy = v[:,1]
+#     return (xx, yy)
+
+
+# # Get contour of all channels without (with) flavour
+# taul_ach, tauh_ach = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann))
+# taul_achf, tauh_achf = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann_and_flavour))
+
+# # Fill contour for all experiments without (with) flavours
+# plt.plot(taul_ach, tauh_ach, color=colors[3])
+# plt.plot(taul_achf, tauh_achf, color=colors[4])
+
+# # Add plot description
+# #plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
+#     #transform=ax.transAxes, color='k', fontsize=16)
+# #plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 0.5)", verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color='k', fontsize=18)
+# plt.title(r"$\rm$ Contours of $\Delta$(log $\mathcal{L}$) = 0.5", fontsize=25)
+
+# # Display ranges and axes ticks; axes titles
+# plt.axis([tauLmin, tauLmax, tauHmin, tauHmax])
+# # # Axes settings and labels    
+# ax.set_autoscale_on(False)
+# plt.xticks(np.arange(tauLmin, tauLmax, .02))
+# plt.yticks(np.arange(tauHmin, tauHmax, .02))
+# # hide some labels
+# for label in ax.get_xticklabels():
+#     label.set_visible(False)
+# for label in ax.get_yticklabels():
+#     label.set_visible(False)
+# for label in ax.get_xticklabels()[3::5]:
+#     label.set_visible(True)
+# for label in ax.get_yticklabels()[3::5]:
+#     label.set_visible(True)    
+
+# for tick in ax.xaxis.get_major_ticks():
+#     tick.label.set_fontsize(20)
+# for tick in ax.yaxis.get_major_ticks():
+#     tick.label.set_fontsize(20)
+
+# plt.xlabel(r'$1/\Gamma_{s {\rm L}}[\mathrm{ps}]$', fontsize=26)
+# plt.ylabel(r'$1/\Gamma_{s {\rm H}}[\mathrm{ps}]$', fontsize=26)
+# ax.xaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
+# ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
+
+# ax.xaxis.set_label_coords(0.9, -0.07)
+# ax.yaxis.set_label_coords(-0.09, 0.9)
+
+# drawHFAGlogo(leftBottom=(1.50, 1.775), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
+# saveplt(plt, 'tauL_vs_tauH')
