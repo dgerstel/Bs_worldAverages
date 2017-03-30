@@ -15,6 +15,11 @@ import matplotlib
 from iminuit import Minuit, describe, Struct, util
 import warnings
 
+# Choose config
+thisVersion = "Spring"
+thisYear = "2017"
+thisLogo = thisVersion+" "+thisYear
+
 # LaTeX font for matplotlib
 matplotlib.rcParams['mathtext.fontset'] = 'cm'
 
@@ -543,17 +548,15 @@ def drawHFAGlogo(leftBottom, fig=fig, ax=ax, plt=plt):
     plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFAG", verticalalignment='center', horizontalalignment='center',
         color='w', fontsize=18, fontstyle='italic', fontweight='light', transform=ax.transAxes)
     # (4) edition (=season+year) text
-    plt.text(x+.5*dx, y+ddy+0.5*height_w, "Spring 2017", verticalalignment='center', horizontalalignment='center',
+    plt.text(x+.5*dx, y+ddy+0.5*height_w, thisLogo, verticalalignment='center', horizontalalignment='center',
         color='k', fontsize=11, fontstyle='italic', fontweight='light', transform=ax.transAxes)
 
 drawHFAGlogo(leftBottom=(0.75, 0.85))
-#drawHFAGlogo(leftBottom=(0.75, 0.85), plotWidth=(phismax-phismin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 
 # plt.show()
 def saveplt(plt, name):
-    imageName = ResDir + name + '.'
     for suffix in ['png', 'pdf', 'eps', 'jpg']:
-        plt.savefig(imageName + suffix, format=suffix, bbox_inches='tight')  
+        plt.savefig(ResDir + thisVersion + thisYear + '_' + name + '.' + suffix, format=suffix, bbox_inches='tight')  
 
 saveplt(plt, name='Phis_vs_DGs')
 
@@ -691,11 +694,6 @@ dGs_SM, dGs_err_SM = 0.088, 0.020  # ps^-1
 left_bottom = (Gsmin, dGs_SM - dGs_err_SM)
 width = Gsmax - Gsmin
 height = 2 * dGs_err_SM
-# the border
-cosmetics = {'linewidth':2, 'edgecolor':'gray', 'facecolor':'None',
-             'alpha':1}
-rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
-# the inside
 cosmetics = {'linewidth':1, 'edgecolor':'None', 'facecolor':'gray',
              'alpha':0.25}
 rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
@@ -715,8 +713,6 @@ for i in range(len(pdfs)):
     # contour 1 <-> 39% confidence interval on 2 delta log likelihood
     # filled in contours and then edge contours (for pretty display)
 
-
-#    if (i == 3 or i == 4):
     if (i == 4):
         plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.95, colors=colors[i])
     else:
