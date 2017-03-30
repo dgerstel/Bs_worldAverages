@@ -523,17 +523,17 @@ ax.set_autoscale_on(False)
 plt.xlabel(r'$\phi_{s}^{c\bar{c}s}[\mathrm{rad}]$', fontsize=26)
 plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 
-def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
+def drawHFAGlogo(leftBottom, fig=fig, ax=ax, plt=plt):
+    bbox = fig.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    width, height = (bbox.width, bbox.height)
     # (1) black rectangle
-#    dx = 0.18*(plotWidth)
-#    dy = 0.12 *(plotHeight)
     dx = 0.18
     dy = 0.12
     x, y = leftBottom
     cosmetics = {'linewidth':.01, 'edgecolor':'k', 'facecolor':'k','transform':ax.transAxes}
     blr = patches.Rectangle((x,y), dx, dy, **cosmetics)
     # (2) small white rectangle
-    ddx, ddy = (0.03*dx, 0.03*dx)
+    ddx, ddy = (0.03*dx, width/height * 0.03*dx)
     cosmetics = {'linewidth':.01, 'facecolor':'white','transform':ax.transAxes}
     height_w = 0.4*dy
     whr = patches.Rectangle((x+ddx,y+ddy), dx-2*ddx, height_w, **cosmetics)
@@ -546,7 +546,8 @@ def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
     plt.text(x+.5*dx, y+ddy+0.5*height_w, "Spring 2017", verticalalignment='center', horizontalalignment='center',
         color='k', fontsize=11, fontstyle='italic', fontweight='light', transform=ax.transAxes)
 
-drawHFAGlogo(leftBottom=(0.75, 0.85), plotWidth=(phismax-phismin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(0.75, 0.85))
+#drawHFAGlogo(leftBottom=(0.75, 0.85), plotWidth=(phismax-phismin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 
 # plt.show()
 def saveplt(plt, name):
@@ -767,7 +768,7 @@ ax.xaxis.set_label_coords(0.93, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.87)
 
 # Draw HFAG logo
-drawHFAGlogo(leftBottom=(0.1,0.85), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(0.1,0.85), fig=fig, ax=ax, plt=plt)#, plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 saveplt(plt, name='Gs_vs_DGs')
 
 
@@ -864,7 +865,7 @@ ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
 ax.xaxis.set_label_coords(0.9, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.9)
 
-drawHFAGlogo(leftBottom=(0.8, 0.85), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
+drawHFAGlogo(leftBottom=(0.8, 0.85), fig=fig, ax=ax, plt=plt)
 saveplt(plt, 'tauL_vs_tauH')
 
 
