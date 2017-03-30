@@ -443,13 +443,8 @@ channels = [["ATLAS"], ["D0"], ["CMS"], ["CDF"], experiments, lhcb_channels]
 labels = [r"ATLAS 19.2 fb$^{-1}$", r"D0 8 fb$^{-1}$", r"CMS 19.7 fb$^{-1}$", r"CDF 9.6 fb$^{-1}$", "Combined", r"LHCb 3 fb$^{-1}$"]
 coords = [(0.47, 0.08), (0.68, 0.85), (0.82, 0.58), (0.94, 0.42), (0.55, 0.45), (0.78, 0.20)]
 colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
-#colors = ['brown', 'lightblue', 'r', 'orange', 'white', 'g']
 
 fig, ax = plt.subplots(1, figsize=(12,8))
-
-         
-
-
  
 #for i in range(len(channels)):
 #  print "test", [exper for exper in channels[i]]
@@ -534,11 +529,11 @@ def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
     dy = 0.12 *(plotHeight)
     #x, y, dx, dy = (0.3, 0.14, 0.1, 0.01)
     x, y = leftBottom
-    cosmetics = {'linewidth':1, 'edgecolor':'k', 'facecolor':'k'}
+    cosmetics = {'linewidth':.01, 'edgecolor':'k', 'facecolor':'k','transform':ax.transAxes}
     blr = patches.Rectangle((x,y), dx, dy, **cosmetics)
     # (2) small white rectangle
-    ddx, ddy = (0.03*dx, 0.008*dx)
-    cosmetics = {'linewidth':.1, 'facecolor':'white'}
+    ddx, ddy = (0.03*dx, 0.03*dx)
+    cosmetics = {'linewidth':.01, 'facecolor':'white','transform':ax.transAxes}
     height_w = 0.4*dy
     whr = patches.Rectangle((x+ddx,y+ddy), dx-2*ddx, height_w, **cosmetics)
     ax.add_patch(blr)
@@ -666,7 +661,7 @@ print_tau_fit(m, outputFile)
 
 ##############################################################################################
 # ### Contour plots
-
+# Plot1: Gs_vs_DGs
 
 # grid
 Gsmin, Gsmax, DGsmin, DGsmax = (0.62, 0.75, 0, 0.255) # DGsmax a bit more
@@ -680,15 +675,9 @@ labels = [r"$B^{0}_{s} \rightarrow D_{s} D_{s}, J/\psi \eta$",
           r"$B^{0}_{s} \rightarrow J/\psi \pi \pi, J/\psi f_0$",
           r"$B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific$ ", 
           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
-# labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
-#           r"$\tau (B^{0}_{s} \rightarrow J/\psi \pi \pi,$"+"\n"+r"$J/\psi f_0)$",
-#           r"$\tau(B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific)$ ", 
-#           r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
 
-
-
-coords = [(0.98, 0.1), (0.95, 0.54), (0.675, 0.20), (0.45, 0.25), (0.40, 0.36)]
-colors = ['magenta', 'green',       'blue', 'red', 'White']
+coords = [(0.98, 0.1), (0.95, 0.57), (0.675, 0.20), (0.585, 0.265), (0.40, 0.36)]
+colors = ['magenta', 'green',       'blue', 'red', 'k']
 
 # all p.d.f.'s to be displayed
 pdfs = [CP_even, CP_odd, flavour_specific, Maxlikelihood(par=('Gs', 'DGs'), exps=experiments, pdf=None, log=False), totpdf_Gs_DGs]
@@ -700,14 +689,19 @@ dGs_SM, dGs_err_SM = 0.088, 0.020  # ps^-1
 left_bottom = (Gsmin, dGs_SM - dGs_err_SM)
 width = Gsmax - Gsmin
 height = 2 * dGs_err_SM
-cosmetics = {'linewidth':1, 'edgecolor':'none', 'facecolor':'khaki',
-             'alpha':0.65}
+# the border
+cosmetics = {'linewidth':2, 'edgecolor':'gray', 'facecolor':'None',
+             'alpha':1}
+rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
+# the inside
+cosmetics = {'linewidth':1, 'edgecolor':'None', 'facecolor':'gray',
+             'alpha':0.25}
 rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
 
 # Add the rectangle to the axes
 ax.add_patch(rec)
-plt.text(0.9, 0.32, s="Theory", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=25)
+plt.text(0.9, 0.43, s="Theory", verticalalignment='bottom', horizontalalignment='right',
+    transform=ax.transAxes, color='gray', fontsize=25)
 
 # Draw contours
 for i in range(len(pdfs)):
@@ -720,7 +714,8 @@ for i in range(len(pdfs)):
     # filled in contours and then edge contours (for pretty display)
 
 
-    if (i == 3):
+#    if (i == 3 or i == 4):
+    if (i == 4):
         plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.95, colors=colors[i])
     else:
         plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.2, colors=colors[i])
@@ -738,21 +733,12 @@ for i in range(len(pdfs)):
     else:
 	    plt.text(coords[i][0], coords[i][1], labels[i], verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color=colors[i], fontsize=25)
 
-
-
-# Add plot description
-#plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
-    #transform=ax.transAxes, color='k', fontsize=16)
-#plt.text(0.95, 0.70, r"($\Delta$ log $\mathcal{L}$ = 0.5)", verticalalignment='bottom', horizontalalignment='right', transform=ax.transAxes, color='k', fontsize=18)
-
 # Display ranges and axes ticks; axes titles
 plt.axis([Gsmin, Gsmax, DGsmin, DGsmax])
 plt.xticks(np.arange(Gsmin, Gsmax, .005))
 plt.yticks(np.arange(DGsmin, DGsmax, .01))
 
 plt.title(r"Contours of $\Delta$(log $\mathcal{L}$) = 0.5", fontsize=25)
-
-#hide_half_labels(ax)
 
 # Axes settings and labels    
 ax.set_autoscale_on(False)
@@ -787,11 +773,11 @@ saveplt(plt, name='Gs_vs_DGs')
 ##################################################################################################
 # ### Analysis in terms of lifetimes
 ##################################################################################################
-
+# Plot2: tauL_vs_tauH
 
 # lists of colours, labels, experiment channels, coordinates of labels
 #colors = ['magenta', 'green',         'blue',     'red',        'White']
-coords = [(0.353, 0.82), (0.95, 0.6), (1.555, 1.54), (0.45, 0.3), (0.48, 0.45)]
+coords = [(0.37, 0.82), (0.95, 0.6), (1.555, 1.54), (0.45, 0.3), (0.48, 0.45)]
 
 # all p.d.f.'s to be displayed (-2 log computed for all except one already with -2 log)
 pdfs = [CP_even_tau, CP_odd_tau, flavour_specific_tau]
@@ -838,9 +824,9 @@ taul_ach, tauh_ach = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann)
 taul_achf, tauh_achf = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann_and_flavour))
 
 # Fill contour for all experiments without (with) flavours
-plt.fill(taul_ach, tauh_ach, color=colors[3], alpha = 0.65)
+plt.plot(taul_ach, tauh_ach, color=colors[3])
 plt.plot(taul_achf, tauh_achf, color=colors[4])
-
+plt.fill(taul_achf, tauh_achf, color=colors[4], alpha=0.95)
 
 # Add plot description
 #plt.text(0.95, 0.75, "39% CL contours", verticalalignment='bottom', horizontalalignment='right',
