@@ -16,10 +16,10 @@ from iminuit import Minuit, describe, Struct, util
 import warnings
 
 # Choose confif
-#thisVersion = "PDG"
-#thisYear = "2017"
-thisVersion = "Summer"
-thisYear = "2016"
+thisVersion = "PDG"
+thisYear = "2017"
+#thisVersion = "Summer"
+#thisYear = "2016"
 thisLogo = thisVersion+" "+thisYear
 
 
@@ -533,35 +533,36 @@ ax.set_autoscale_on(False)
 plt.xlabel(r'$\phi_{s}^{c\bar{c}s}[\mathrm{rad}]$', fontsize=26)
 plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 
-def drawHFAGlogo(leftBottom, plotWidth, plotHeight, ax=ax, plt=plt):
+def drawHFAGlogo(topRight, fig=fig, ax=ax, plt=plt):
+    bbox = fig.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
+    width, height = (bbox.width, bbox.height)
     # (1) black rectangle
-    dx = 0.18*(plotWidth)
-    dy = 0.12 *(plotHeight)
-    #x, y, dx, dy = (0.3, 0.14, 0.1, 0.01)
-    x, y = leftBottom
-    cosmetics = {'linewidth':1, 'edgecolor':'k', 'facecolor':'k'}
+    dx = 0.18
+    dy = 0.12
+    x, y = topRight
+    x, y = x - dx, y - dy  # topRight->bottomLeft
+    cosmetics = {'linewidth':.01, 'edgecolor':'k', 'facecolor':'k','transform':ax.transAxes}
     blr = patches.Rectangle((x,y), dx, dy, **cosmetics)
     # (2) small white rectangle
-    ddx, ddy = (0.03*dx, 0.008*dx)
-    cosmetics = {'linewidth':.1, 'facecolor':'white'}
+    ddx, ddy = (0.03*dx, width/height * 0.03*dx)
+    cosmetics = {'linewidth':.01, 'facecolor':'white','transform':ax.transAxes}
     height_w = 0.4*dy
     whr = patches.Rectangle((x+ddx,y+ddy), dx-2*ddx, height_w, **cosmetics)
     ax.add_patch(blr)
     ax.add_patch(whr)
     # (3) HFAG text
     plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFlAv", verticalalignment='center', horizontalalignment='center',
-        color='w', fontsize=18, fontstyle='italic', fontweight='light')
+        color='w', fontsize=18, fontstyle='italic', fontweight='light', transform=ax.transAxes)
     # (4) edition (=season+year) text
     plt.text(x+.5*dx, y+ddy+0.5*height_w, thisLogo, verticalalignment='center', horizontalalignment='center',
-        color='k', fontsize=11, fontstyle='italic', fontweight='light')
+        color='k', fontsize=11, fontstyle='italic', fontweight='light', transform=ax.transAxes)
 
-drawHFAGlogo(leftBottom=(0.3, 0.135), plotWidth=(phismax-phismin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(topRight=(0.95, 0.95), fig=fig, ax=ax, plt=plt)
 
 # plt.show()
 def saveplt(plt, name):
-    imageName = ResDir + name + '.'
     for suffix in ['png', 'pdf', 'eps', 'jpg']:
-        plt.savefig(imageName + suffix, format=suffix, bbox_inches='tight')  
+        plt.savefig(ResDir + thisVersion + thisYear + '_' + name + '.' + suffix, format=suffix, bbox_inches='tight')  
 
 saveplt(plt, name='Phis_vs_DGs')
 
@@ -691,8 +692,8 @@ labels = [r"$B^{0}_{s} \rightarrow D_{s} D_{s}, J/\psi \eta$",
 
 
 
-coords = [(0.98, 0.1), (0.95, 0.54), (0.677, 0.20), (0.45, 0.25), (0.40, 0.36)]
-colors = ['magenta', 'green', 'blue', 'red', 'White']
+coords = [(0.98, 0.1), (0.95, 0.54), (0.677, 0.20), (0.59, 0.265), (0.40, 0.36)]
+colors = ['magenta', 'green', 'blue', 'red', 'k']
 
 # all p.d.f.'s to be displayed
 pdfs = [CP_even, CP_odd, flavour_specific, Maxlikelihood(par=('Gs', 'DGs'), exps=experiments, pdf=None, log=False), totpdf_Gs_DGs]
@@ -704,14 +705,14 @@ dGs_SM, dGs_err_SM = 0.088, 0.020  # ps^-1
 left_bottom = (Gsmin, dGs_SM - dGs_err_SM)
 width = Gsmax - Gsmin
 height = 2 * dGs_err_SM
-cosmetics = {'linewidth':1, 'edgecolor':'none', 'facecolor':'khaki',
-             'alpha':0.65}
+cosmetics = {'linewidth':1, 'edgecolor':'gray', 'facecolor':'gray',
+             'alpha':0.25}
 rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
 
 # Add the rectangle to the axes
 ax.add_patch(rec)
-plt.text(0.9, 0.32, s="Theory", verticalalignment='bottom', horizontalalignment='right',
-    transform=ax.transAxes, color='k', fontsize=25)
+plt.text(0.9, 0.43, s="Theory", verticalalignment='bottom', horizontalalignment='right',
+    transform=ax.transAxes, color='gray', fontsize=25)
 
 # Draw contours
 for i in range(len(pdfs)):
@@ -724,7 +725,7 @@ for i in range(len(pdfs)):
     # filled in contours and then edge contours (for pretty display)
 
 
-    if (i == 3):
+    if (i == 4):
         plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.95, colors=colors[i])
     else:
         plt.contourf(X, Y, dlnL, levels=[0, 1.], alpha=0.2, colors=colors[i])
@@ -784,7 +785,7 @@ ax.xaxis.set_label_coords(0.93, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.87)
 
 # Draw HFAG logo
-drawHFAGlogo(leftBottom=(0.625,0.215), plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(topRight=(0.95,0.95), fig=fig, ax=ax, plt=plt)#, plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
 saveplt(plt, name='Gs_vs_DGs')
 
 
@@ -795,7 +796,7 @@ saveplt(plt, name='Gs_vs_DGs')
 
 # lists of colours, labels, experiment channels, coordinates of labels
 #colors = ['magenta', 'green',         'blue',     'red',        'White']
-coords = [(0.353, 0.82), (0.95, 0.6), (1.54, 1.54), (0.45, 0.3), (0.48, 0.45)]
+coords = [(0.37, 0.82), (0.95, 0.6), (1.54, 1.54), (0.45, 0.3), (0.48, 0.45)]
 
 # all p.d.f.'s to be displayed (-2 log computed for all except one already with -2 log)
 pdfs = [CP_even_tau, CP_odd_tau, flavour_specific_tau]
@@ -842,8 +843,9 @@ taul_ach, tauh_ach = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann)
 taul_achf, tauh_achf = translate_gamma2tau(*extract_pyplot_contour(cntr_all_chann_and_flavour))
 
 # Fill contour for all experiments without (with) flavours
-plt.fill(taul_ach, tauh_ach, color=colors[3], alpha = 0.65)
+plt.plot(taul_ach, tauh_ach, color=colors[3], alpha = 0.65)
 plt.plot(taul_achf, tauh_achf, color=colors[4])
+plt.fill(taul_achf, tauh_achf, color=colors[4], alpha=0.95)
 
 
 # Add plot description
@@ -881,5 +883,5 @@ ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
 ax.xaxis.set_label_coords(0.9, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.9)
 
-drawHFAGlogo(leftBottom=(1.57, 1.79), plotWidth=(tauLmax-tauLmin), plotHeight=(tauHmax-tauHmin), ax=ax, plt=plt)
+drawHFAGlogo(topRight=(0.95, 0.95), fig=fig, ax=ax, plt=plt)
 saveplt(plt, 'tauL_vs_tauH')
