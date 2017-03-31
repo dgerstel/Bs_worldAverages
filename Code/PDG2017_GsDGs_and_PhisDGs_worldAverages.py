@@ -1,5 +1,5 @@
 
-## HFAG, Combined Gs, DGs including correlated statistical and
+## HFlAv, Combined Gs, DGs including correlated statistical and
 ## systematical uncertainties 
 #### Rick van Kooten, Olivier Leroy
 #### Re-writing code in Python: Dawid Gerstel
@@ -447,7 +447,7 @@ X, Y = np.meshgrid(X, Y)
 # lists of colours, labels, experiment channels, coordinates of labels
 lhcb_channels = experiments[0:2]
 channels = [["ATLAS"], ["D0"], ["CMS"], ["CDF"], experiments, lhcb_channels]
-labels = [r"ATLAS 19.2 fb$^{-1}$", r"D0 8 fb$^{-1}$", r"CMS 19.7 fb$^{-1}$", r"CDF 9.6 fb$^{-1}$", "Combined", r"LHCb 3 fb$^{-1}$"]
+labels = [r"ATLAS 19.2 fb$^{-1}$", r"D0 8 fb$^{-1}$", r"CMS 19.7 fb$^{-1}$", r"CDF 9.6 fb$^{-1}$", r"$\rm Combined$", r"LHCb 3 fb$^{-1}$"]
 coords = [(0.47, 0.08), (0.68, 0.85), (0.82, 0.58), (0.94, 0.42), (0.55, 0.45), (0.78, 0.20)]
 colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
 #colors = ['brown', 'lightblue', 'r', 'orange', 'white', 'g']
@@ -688,7 +688,7 @@ channels = [experiments]
 labels = [r"$B^{0}_{s} \rightarrow D_{s} D_{s}, J/\psi \eta$",
           r"$B^{0}_{s} \rightarrow J/\psi \pi \pi, J/\psi f_0$",
           r"$B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific$ ", 
-          r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
+          r"$B^{0}_{s}\rightarrow c\bar{c}KK$", r"$\rm Combined$"]
 # labels = [r"$\tau(B^{0}_{s} \rightarrow D_{s} D_{s},$"+"\n"+r"$J/\psi \eta)$",
 #           r"$\tau (B^{0}_{s} \rightarrow J/\psi \pi \pi,$"+"\n"+r"$J/\psi f_0)$",
 #           r"$\tau(B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific)$ ", 
@@ -696,7 +696,7 @@ labels = [r"$B^{0}_{s} \rightarrow D_{s} D_{s}, J/\psi \eta$",
 
 
 
-coords = [(0.98, 0.1), (0.95, 0.54), (0.677, 0.20), (0.59, 0.265), (0.40, 0.36)]
+coords = [(0.98, 0.1), (0.95, 0.54), (0.677, 0.20), (0.60, 0.265), (0.40, 0.36)]
 colors = ['magenta', 'green', 'blue', 'red', 'k']
 
 # all p.d.f.'s to be displayed
@@ -715,7 +715,7 @@ rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
 
 # Add the rectangle to the axes
 ax.add_patch(rec)
-plt.text(0.9, 0.43, s="Theory", verticalalignment='bottom', horizontalalignment='right',
+plt.text(0.9, 0.43, s=r"$\rm Theory$", verticalalignment='bottom', horizontalalignment='right',
     transform=ax.transAxes, color='gray', fontsize=25)
 
 # Draw contours
