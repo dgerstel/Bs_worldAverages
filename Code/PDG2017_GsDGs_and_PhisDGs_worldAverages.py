@@ -712,6 +712,8 @@ height = 2 * dGs_err_SM
 cosmetics = {'linewidth':1, 'edgecolor':'gray', 'facecolor':'gray',
              'alpha':0.25}
 rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
+plt.plot((Gsmin,Gsmax), (dGs_SM+dGs_err_SM,dGs_SM+dGs_err_SM), color='gray', linestyle='-', linewidth=1.9)
+plt.plot((Gsmin,Gsmax), (dGs_SM-dGs_err_SM,dGs_SM-dGs_err_SM), color='gray', linestyle='-', linewidth=1.9)
 
 # Add the rectangle to the axes
 ax.add_patch(rec)
