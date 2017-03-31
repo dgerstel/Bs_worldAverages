@@ -1,0 +1,104 @@
+ ### Inputs ####################################### 
+ === Experiment =================================================== 
+LHCb-PAPER-2017-008 preliminary JpsiKK high mass, 
+LHCb, Precision Measurement of CP Violation in B0s to JpsiKK; PRL 114, 041801 (2015)., 
+LHCb, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; 
+ Phys Rev. Lett. 113, 211801 (2014).
+Gs = 0.6588+/-0.0022 (stat) +/-0.0015 (syst) 
+DGs = 0.0813+/-0.0073 (stat) +/-0.0036 (syst) 
+phis = 0.00157490284703+/-0.0364447579818 (tot) 
+rho_phis_DGs_tot = -0.05 
+rho_Gs_DGs_tot = -0.13 
+ === Experiment =================================================== 
+LHCb, First study of the CP-violating phase and decay-width difference in B0s to Psi(2S)Phi decays, Physics Letters B762 (2016) 253-262.
+Gs = 0.668+/-0.011 (stat) +/-0.006 (syst) 
+DGs = 0.066+/-0.425264623499 (stat) +/-0.007 (syst) 
+phis = 0.23+/-0.285043856275 (stat) +/-0.02 (syst) 
+rho_phis_DGs_tot = 0.189508356281 
+rho_Gs_DGs_tot = -0.351110666939 
+ === Experiment =================================================== 
+ATLAS, JHEP08(2016)147
+Gs = 0.675+/-0.003 (stat) +/-0.003 (syst) 
+DGs = 0.085+/-0.011 (stat) +/-0.007 (syst) 
+phis = -0.09+/-0.078 (stat) +/-0.041 (syst) 
+rho_phis_DGs_tot = 0.0724375630623 
+rho_Gs_DGs_tot = -0.246975326227 
+ === Experiment =================================================== 
+CMS, Phys.Lett.B 757,97 (2016)
+Gs = 0.670376694991+/-0.0043472549541 (stat) +/-0.00554649770006 (syst) 
+DGs = 0.095+/-0.013 (stat) +/-0.007 (syst) 
+phis = -0.075+/-0.097 (stat) +/-0.031 (syst) 
+rho_phis_DGs_tot = 0.0838682269189 
+rho_Gs_DGs_tot = -0.298730562099 
+ === Experiment =================================================== 
+CDF, Phys.Rev.Lett 109,171802 (2012), http://journals.aps.org/prl/pdf/10.1103/PhysRevLett.109.171802
+Gs = 0.65445026178+/-0.0081377977577 (stat) +/-0.0038547463 (syst) 
+DGs = 0.068+/-0.026 (stat) +/-0.009 (syst) 
+phis = -0.24+/-0.36 (tot) 
+rho_phis_DGs_tot = 0 
+rho_Gs_DGs_tot = -0.444090229466 
+ === Experiment =================================================== 
+D0, Phys Rev D 85, 032006 (2011), https://journals.aps.org/prd/abstract/10.1103/PhysRevD.85.032006
+Gs = 0.693000693001+/-0.0175439195385 (stat) +/-0.0 (syst) 
+DGs = 0.163+/-0.0645019379554 (stat) +/-0.0 (syst) 
+phis = -0.55+/-0.370135110466 (tot) 
+rho_phis_DGs_tot = -0.05 
+rho_Gs_DGs_tot = -0.05 
+  
+ Lifetime inputs 
+ === Experiment =================================================== 
+DsDs, Measurement of the CP-Violating Phase phi_s in B0s to DsDs Decays; 
+ Phys Rev. Lett. 113, 211801 (2014), http://arxiv.org/abs/1409.4619
+tau = 1.379+/-0.03106 (tot) 
+ === Experiment =================================================== 
+JpsiEta, LHCb
+tau = 1.479+/-0.03573513677 (tot) 
+ === Experiment =================================================== 
+Jpsif0 from CDF, D0 and LHCb JpsiPiPi 1fb-1
+tau = 1.65765+/-0.03188 (tot) 
+ === Experiment =================================================== 
+tauFS, OS, COMBOS, including D0 DsMuX and LHCb DsMuNu LakeLouise 2017
+tau = 1.527+/-0.011 (tot) 
+  
+ ### Fit results ####################################### 
+
+
+
+Result from DGs - phi_s  fit:
+==============================
+phis = -0.0214913572104 ^{+ 0.0314814838656 }_{ -0.0314814566809 }
+DGs = 0.0848593533391 ^{+ 0.00605984238203 }_{ -0.00606016122514 }
+rho( phis ,  DGs ) =  -0.00951975742776
+
+
+Fit using ONLY Bs->Jpsihh:
+==============================
+Gs = 0.663980348076 ^{+ 0.00202496387605 }_{ -0.00204699045664 }
+DGs = 0.0852028342849 ^{+ 0.00602931811327 }_{ -0.00603578993113 }
+rho( Gs ,  DGs ) =  -0.193421411452
+taus = 1/Gs = 1.5060686704 ^{+ 0.00459310981303 }_{ -0.00464307144675 }
+tauL = 1/GL =  1.41526437452  +/-  0.0066028735185
+tauH = 1/GH =  1.60932395712  +/-  0.0102353622454
+DGs/Gs =  0.128321319346  +/-  0.00916952812297
+
+
+Fit using Jpsihh and effective lifetimes (CP-even and odd):
+==============================
+Gs = 0.663293183428 ^{+ 0.00197523545626 }_{ -0.00198313492185 }
+DGs = 0.0871150520447 ^{+ 0.00567853795884 }_{ -0.00570702187551 }
+rho( Gs ,  DGs ) =  -0.183094446032
+taus = 1/Gs = 1.50762894145 ^{+ 0.0044896016037 }_{ -0.0045075566547 }
+tauL = 1/GL =  1.41472589138  +/-  0.00631519906517
+tauH = 1/GH =  1.61359119497  +/-  0.00977048423806
+DGs/Gs =  0.131337173698  +/-  0.0086628556887
+
+
+DEFAULT fit using Jpsihh, effective lifetimes and tauFS:
+==============================
+Gs = 0.662872836951 ^{+ 0.00181126020679 }_{ -0.00180848321101 }
+DGs = 0.0877259300683 ^{+ 0.00556920617747 }_{ -0.00558261490058 }
+rho( Gs ,  DGs ) =  -0.109549713488
+taus = 1/Gs = 1.50858497174 ^{+ 0.00412211781138 }_{ -0.00411579784493 }
+tauL = 1/GL =  1.41495591024  +/-  0.00631310514235
+tauH = 1/GH =  1.6154831213  +/-  0.00909840121995
+DGs/Gs =  0.132342019733  +/-  0.00845902959631
