@@ -528,13 +528,18 @@ ax.set_autoscale_on(False)
 plt.xlabel(r'$\phi_{s}^{c\bar{c}s}[\mathrm{rad}]$', fontsize=26)
 plt.ylabel(r'$\Delta \Gamma_{s}[\mathrm{ps}^{-1}]$', fontsize=26)
 
-def drawHFAGlogo(leftBottom, fig=fig, ax=ax, plt=plt):
+def drawHFAGlogo(topLeft=None, topRight=None, fig=fig, ax=ax, plt=plt):
     bbox = fig.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
     width, height = (bbox.width, bbox.height)
     # (1) black rectangle
     dx = 0.18
     dy = 0.12
-    x, y = leftBottom
+    if topRight is not None:
+        x, y = topRight
+        x, y = x - dx, y - dy  # topRight->bottomLeft
+    if topLeft is not None:
+        x, y = topLeft
+        x, y = x, y - dy
     cosmetics = {'linewidth':.01, 'edgecolor':'k', 'facecolor':'k','transform':ax.transAxes}
     blr = patches.Rectangle((x,y), dx, dy, **cosmetics)
     # (2) small white rectangle
@@ -551,7 +556,7 @@ def drawHFAGlogo(leftBottom, fig=fig, ax=ax, plt=plt):
     plt.text(x+.5*dx, y+ddy+0.5*height_w, thisLogo, verticalalignment='center', horizontalalignment='center',
         color='k', fontsize=11, fontstyle='italic', fontweight='light', transform=ax.transAxes)
 
-drawHFAGlogo(leftBottom=(0.75, 0.85))
+drawHFAGlogo(topRight=(0.95, 0.95), fig=fig, ax=ax, plt=plt)
 
 # plt.show()
 def saveplt(plt, name):
@@ -764,7 +769,7 @@ ax.xaxis.set_label_coords(0.93, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.87)
 
 # Draw HFAG logo
-drawHFAGlogo(leftBottom=(0.1,0.85), fig=fig, ax=ax, plt=plt)#, plotWidth=(Gsmax-Gsmin), plotHeight=(DGsmax-DGsmin), ax=ax, plt=plt)
+drawHFAGlogo(topLeft=(0.05,0.95), fig=fig, ax=ax, plt=plt)
 saveplt(plt, name='Gs_vs_DGs')
 
 
@@ -861,7 +866,7 @@ ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('%0.1f'))
 ax.xaxis.set_label_coords(0.9, -0.07)
 ax.yaxis.set_label_coords(-0.09, 0.9)
 
-drawHFAGlogo(leftBottom=(0.8, 0.85), fig=fig, ax=ax, plt=plt)
+drawHFAGlogo(topRight=(0.95, 0.95), fig=fig, ax=ax, plt=plt)
 saveplt(plt, 'tauL_vs_tauH')
 
 
