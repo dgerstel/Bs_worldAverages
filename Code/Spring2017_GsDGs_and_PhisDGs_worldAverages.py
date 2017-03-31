@@ -684,7 +684,7 @@ channels = [experiments]
 labels = [r"$B^{0}_{s} \rightarrow D_{s} D_{s}, J/\psi \eta$",
           r"$B^{0}_{s} \rightarrow J/\psi \pi \pi, J/\psi f_0$",
           r"$B^{0}_{s} \rightarrow$ $\rm flavour$ $\rm specific$ ", 
-          r"$B^{0}_{s}\rightarrow c\bar{c}KK$", "Combined"]
+          r"$B^{0}_{s}\rightarrow c\bar{c}KK$", r"$\rm Combined$"]
 
 coords = [(0.98, 0.1), (0.95, 0.57), (0.675, 0.20), (0.585, 0.265), (0.40, 0.36)]
 colors = ['magenta', 'green',       'blue', 'red', 'k']
@@ -705,7 +705,7 @@ rec = patches.Rectangle(left_bottom, width=width, height=height, **cosmetics)
 
 # Add the rectangle to the axes
 ax.add_patch(rec)
-plt.text(0.9, 0.43, s="Theory", verticalalignment='bottom', horizontalalignment='right',
+plt.text(0.9, 0.43, s=r"$\rm Theory$", verticalalignment='bottom', horizontalalignment='right',
     transform=ax.transAxes, color='gray', fontsize=25)
 
 # Draw contours
