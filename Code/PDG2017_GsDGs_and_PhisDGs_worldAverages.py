@@ -447,7 +447,7 @@ X, Y = np.meshgrid(X, Y)
 # lists of colours, labels, experiment channels, coordinates of labels
 lhcb_channels = experiments[0:2]
 channels = [["ATLAS"], ["D0"], ["CMS"], ["CDF"], experiments, lhcb_channels]
-labels = [r"ATLAS 19.2 fb$^{-1}$", r"D0 8 fb$^{-1}$", r"CMS 19.7 fb$^{-1}$", r"CDF 9.6 fb$^{-1}$", r"$\rm Combined$", r"LHCb 3 fb$^{-1}$"]
+labels = [r"ATLAS 19.2 fb$^{-1}$", r"D0 8 fb$^{-1}$", r"CMS 19.7 fb$^{-1}$", r"CDF 9.6 fb$^{-1}$", "Combined", r"LHCb 3 fb$^{-1}$"]
 coords = [(0.47, 0.08), (0.68, 0.85), (0.82, 0.58), (0.94, 0.42), (0.55, 0.45), (0.78, 0.20)]
 colors = ['brown', 'b', 'r', 'orange', 'white', 'g']
 #colors = ['brown', 'lightblue', 'r', 'orange', 'white', 'g']
