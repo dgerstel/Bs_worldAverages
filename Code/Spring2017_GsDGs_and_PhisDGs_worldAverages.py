@@ -1,5 +1,5 @@
 
-## HFlAv, Combined Gs, DGs including correlated statistical and
+## HFLAV, Combined Gs, DGs including correlated statistical and
 ## systematical uncertainties 
 #### Rick van Kooten, Olivier Leroy
 #### Re-writing code in Python: Dawid Gerstel
@@ -550,7 +550,7 @@ def drawHFAGlogo(topLeft=None, topRight=None, fig=fig, ax=ax, plt=plt):
     ax.add_patch(blr)
     ax.add_patch(whr)
     # (3) HFAG text
-    plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFlAv", verticalalignment='center', horizontalalignment='center',
+    plt.text(x+.5*dx, y+0.5*(dy+height_w+ddy), "HFLAV", verticalalignment='center', horizontalalignment='center',
         color='w', fontsize=18, fontstyle='italic', fontweight='light', transform=ax.transAxes)
     # (4) edition (=season+year) text
     plt.text(x+.5*dx, y+ddy+0.5*height_w, thisLogo, verticalalignment='center', horizontalalignment='center',
